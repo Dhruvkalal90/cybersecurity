@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker Dashboard - Cyber Bridge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hacker.css' %}">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3 fixed-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="{% static "images/CB.png" %}" alt="Cyber Bridge Logo" style="height:50px; margin-right:10px;">
+            <span style="color:#00D9FF; font-weight:700;">Cyber Bridge</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item"><a class="nav-link active" href="hacker-dashboard.html">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-apply-complaint.html">Complaints</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-my-work.html">My Work</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-blog-management.html">Blogs</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-earnings-banking.html">Earnings</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-profile.html">Profile</a></li>
+                <li class="nav-item ms-3">
+                    <div class="navbar-user">
+                        <div class="notification-icon">
+                            <i class="bi bi-bell"></i>
+                            <span class="notification-badge">0</span>
+                        </div>
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i>{{request.user.username}}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" style="background-color: #1a1f29; border: 1px solid #1f2937;">
+                                <li><a class="dropdown-item" href="#" style="color: #e5e7eb;">Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url "logout" %}" style="color: #EF4444;">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ===== MAIN CONTAINER ===== -->
+<main class="container my-5" style="margin-top: 120px !important;">
+    
+    <!-- Page title -->
+    <h1 class="page-title">Hacker Dashboard</h1>
+    <p class="page-subtitle">Welcome back, John! Here's your overview.</p>
+    
+    <!-- STAT CARDS ROW -->
+    <div class="row mb-5">
+        
+        <!-- Card 1: Active Work -->
+        <div class="col-md-3 mb-3">
+            <div class="card-stat card-stat-cyan">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-stat-number card-stat-number-cyan">0</div>
+                        <div class="card-stat-label">Active Work</div>
+                    </div>
+                    <i class="bi bi-hourglass-split card-stat-icon card-stat-icon-cyan"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2: Completed -->
+        <div class="col-md-3 mb-3">
+            <div class="card-stat card-stat-success">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-stat-number card-stat-number-success">0</div>
+                        <div class="card-stat-label">Completed</div>
+                    </div>
+                    <i class="bi bi-check-circle card-stat-icon card-stat-icon-success"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3: Total Earnings -->
+        <div class="col-md-4 mb-3">
+            <div class="card-stat card-stat-info">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-stat-number card-stat-number-warning">₹0</div>
+                        <div class="card-stat-label">Total Earnings</div>
+                    </div>
+                    <i class="bi bi-wallet2 card-stat-icon card-stat-icon-warning"></i>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- ACTION BUTTONS ROW -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="d-flex gap-3 flex-wrap">
+                <a href="hacker-apply-complaint.html" class="button-primary">
+                    <i class="bi bi-search me-2"></i>Browse Complaints
+                </a>
+                <a href="hacker-my-work.html" class="button-secondary">
+                    <i class="bi bi-briefcase me-2"></i>My Work
+                </a>
+                <a href="hacker-blog-management.html" class="button-secondary">
+                    <i class="bi bi-pencil-square me-2"></i>Manage Blogs
+                </a>
+                <a href="hacker-earnings-banking.html" class="button-secondary">
+                    <i class="bi bi-cash-coin me-2"></i>View Earnings
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MAIN CONTENT: OPPORTUNITIES SECTION -->
+    <div class="row">
+        <div class="col-12">
+            
+            <!-- Available Complaints Section -->
+            <div class="card-dark opportunities-card">
+                <h3 class="opportunities-title">
+                    <i class="bi bi-briefcase me-2"></i>New Opportunities
+                </h3>
+                
+                <!-- Complaint Item 1 -->
+                <div class="opportunity-item">
+                    <div class="opportunity-header">
+                        <div>
+                            <h4 class="opportunity-title"></h4>
+                            <span class="opportunity-meta"></span>
+                        </div>
+                        <span class="badge badge-pending opportunity-badge"></span>
+                    </div>
+                    <div class="opportunity-details">
+                        <span class="badge badge-info opportunity-category"></span>
+                        <span class="opportunity-price">
+                           <!-- <i class="bi bi-currency-rupee"></i> -->
+                        </span>
+                    </div>
+                    <a href="browse-apply-complaints.html" class="opportunity-link">
+                        View Details <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Complaint Item 2 -->
+                <div class="opportunity-item">
+                    <div class="opportunity-header">
+                        <div>
+                            <h4 class="opportunity-title"></h4>
+                            <span class="opportunity-meta"></span>
+                        </div>
+                        <span class="badge badge-pending opportunity-badge"></span>
+                    </div>
+                    <div class="opportunity-details">
+                        <span class="badge badge-info opportunity-category"></span>
+                        <span class="opportunity-price">
+                           <!-- <i class="bi bi-currency-rupee"></i> -->
+                        </span>
+                    </div>
+                    <a href="browse-apply-complaints.html" class="opportunity-link">
+                        View Details <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Complaint Item 3 -->
+                <div class="opportunity-item">
+                    <div class="opportunity-header">
+                        <div>
+                            <h4 class="opportunity-title"></h4>
+                            <span class="opportunity-meta"></span>
+                        </div>
+                        <span class="badge badge-pending opportunity-badge"></span>
+                    </div>
+                    <div class="opportunity-details">
+                        <span class="badge badge-info opportunity-category"></span>
+                        <span class="opportunity-price">
+                           <!-- <i class="bi bi-currency-rupee"></i> -->
+                        </span>
+                    </div>
+                    <a href="browse-apply-complaints.html" class="opportunity-link">
+                        View Details <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- View All Link -->
+                <div class="text-center mt-3">
+                    <a href="hacker-apply-complaint.html" class="view-all-link">
+                        View All Complaints <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer-dark mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h5 style="color:#00D9FF;"><i class="bi bi-shield-lock-fill"></i> Cyber Bridge</h5>
+                <p class="text-gray mt-3">
+                    Bridging Businesses with Ethical Hackers. Your trusted cybersecurity solution platform.
+                </p>
+                <div class="mt-4">
+                    <i class="bi bi-twitter footer-social-icon"></i>
+                    <i class="bi bi-linkedin footer-social-icon"></i>
+                    <i class="bi bi-github footer-social-icon"></i>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h6 class="text-white fw-bold mb-3">Quick Links</h6>
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="index.html#features" class="footer-link">How it Works</a>
+                <a href="index.html#contact" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">Help Center</a>
+                <a href="#" class="footer-link">FAQ</a>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h6 class="text-white fw-bold mb-3">Legal</h6>
+                <a href="terms-privacy.html" class="footer-link">Terms & Conditions</a>
+                <a href="terms-privacy.html" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Cookie Policy</a>
+                <a href="#" class="footer-link">Security</a>
+            </div>
+        </div>
+
+        <div class="border-top mt-4 pt-3 d-flex justify-content-between align-items-center flex-wrap">
+            <p class="text-gray mb-0">© 2025 Cyber Bridge. All rights reserved.</p>
+            <p class="text-success mb-0"><i class="bi bi-shield-lock-fill"></i> Secure Platform</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

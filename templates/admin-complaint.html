@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Complaints - Cyber Bridge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid" style="padding: 0 24px;">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="logo.png" alt="Cyber Bridge Logo" style="height:50px; margin-right:10px;">
+                <span style="color:#00D9FF; font-weight:700;">Cyber Bridge</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-manage-user.html">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-complaint.html">Complaints</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="admin-manage-session.html">Sessions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-manage-content.html">Content</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-manage-payment.html">Payments</a>
+                    </li>
+                </ul>
+                <div class="navbar-user">
+                    <div class="notification-icon">
+                        <i class="bi bi-bell"></i>
+                        <span class="notification-badge">0</span>
+                    </div>
+                    <span class="admin-badge">ADMIN</span>
+                    <div class="dropdown">
+                        <button class="btn btn-link text-decoration-none dropdown-toggle" type="button" data-bs-toggle="dropdown" style="color: #F9FAFB;">
+                            <i class="bi bi-person-circle" style="font-size: 24px;"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" style="background: #1a1f29; border: 1px solid #374151;">
+                            <li><a class="dropdown-item" href="#" style="color: #F9FAFB;">Profile</a></li>
+                            <li><a class="dropdown-item" href="index.html" style="color: #EF4444;">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="container-fluid my-5 px-4">
+        
+        <!-- Back link -->
+        <a href="admin-dashboard.html" class="text-cyan" style="text-decoration: none; display: inline-block; margin-bottom: 24px;">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+        
+        <!-- Page title -->
+        <h1 class="page-title">Manage Complaints</h1>
+        <p style="color: #9CA3AF; margin-bottom: 40px;">Review and manage all security complaints.</p>
+        
+        <!-- Stats Row (4 cards) -->
+        <div class="row mb-5">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card-stat card-stat-cyan">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="card-stat-number card-stat-number-cyan">0</div>
+                            <div class="card-stat-label">Total Complaints</div>
+                        </div>
+                        <i class="bi bi-file-earmark-text card-stat-icon card-stat-icon-cyan"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card-stat" style="background-color: #1a1f29; border: 2px solid #F59E0B;">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="card-stat-number" style="color: #F59E0B; text-shadow: 0 0 20px rgba(245, 158, 11, 0.4);">0</div>
+                            <div class="card-stat-label">Pending</div>
+                        </div>
+                        <i class="bi bi-clock-history card-stat-icon" style="color: #F59E0B; opacity: 0.5;"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card-stat card-stat-info">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="card-stat-number card-stat-number-info">0</div>
+                            <div class="card-stat-label">In Progress</div>
+                        </div>
+                        <i class="bi bi-hourglass-split card-stat-icon card-stat-icon-info"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card-stat card-stat-success">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="card-stat-number card-stat-number-success">0</div>
+                            <div class="card-stat-label">Resolved</div>
+                        </div>
+                        <i class="bi bi-check-circle card-stat-icon card-stat-icon-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Filter Section -->
+        <div class="card-dark p-4 mb-4">
+            <div class="row align-items-end">
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Status</label>
+                    <select class="form-input">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Category</label>
+                    <select class="form-input">
+                        <option value="">All Categories</option>
+                        <option value="phishing">Phishing</option>
+                        <option value="malware">Malware</option>
+                        <option value="ransomware">Ransomware</option>
+                        <option value="data-breach">Data Breach</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Search</label>
+                    <input type="text" class="form-input" placeholder="Search by ID or title...">
+                </div>
+                <div class="col-md-2 mb-3">
+                    <button class="button-primary" style="width: 100%;">
+                        <i class="bi bi-search me-1"></i> Search
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Complaints Table -->
+        <div class="card-dark p-4">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h3 style="font-size: 20px; color: #F9FAFB; margin: 0;">
+                    <i class="bi bi-file-earmark-text me-2"></i>All Complaints
+                </h3>
+            </div>
+            
+            <div class="admin-table-wrapper">
+                <table class="table-dark admin-table">
+                    <thead>
+                        <tr class="table-header">
+                            <th class="table-header-cell">ID</th>
+                            <th class="table-header-cell">Title</th>
+                            <th class="table-header-cell">Business</th>
+                            <th class="table-header-cell">Category</th>
+                            <th class="table-header-cell">Assigned Hacker</th>
+                            <th class="table-header-cell">Status</th>
+                            <th class="table-header-cell">Date</th>
+                            <th class="table-header-cell">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Empty row 1 -->
+                        <tr class="table-row">
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                        </tr>
+                        <!-- Empty row 2 -->
+                        <tr class="table-row">
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                        </tr>
+                        <!-- Empty row 3 -->
+                        <tr class="table-row">
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                        </tr>
+                        <!-- Empty row 4 -->
+                        <tr class="table-row">
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                        </tr>
+                        <!-- Empty row 5 -->
+                        <tr class="table-row">
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div style="display: flex; justify-content: center; margin-top: 24px; gap: 8px;">
+                <button class="button-secondary" style="padding: 8px 16px;" disabled>
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <button class="button-primary" style="padding: 8px 16px;">1</button>
+                <button class="button-secondary" style="padding: 8px 16px;">2</button>
+                <button class="button-secondary" style="padding: 8px 16px;">3</button>
+                <button class="button-secondary" style="padding: 8px 16px;">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-cyan mb-3">
+                        <i class="bi bi-shield-lock-fill"></i> CyberBridge
+                    </h5>
+                    <p class="text-gray">
+                        Connecting businesses with expert ethical hackers to solve cybersecurity challenges efficiently and securely.
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-white mb-3">Quick Links</h5>
+                    <a href="#" class="footer-link">About Us</a>
+                    <a href="#" class="footer-link">How It Works</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-white mb-3">Contact</h5>
+                    <p class="text-gray">Email: support@cyberbridge.com</p>
+                    <p class="text-gray">Phone: +91 1234567890</p>
+                    <div class="mt-3">
+                        <i class="bi bi-facebook footer-social-icon"></i>
+                        <i class="bi bi-twitter footer-social-icon"></i>
+                        <i class="bi bi-linkedin footer-social-icon"></i>
+                        <i class="bi bi-instagram footer-social-icon"></i>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-color: #1f2937; margin: 30px 0;">
+            <p class="text-center text-gray mb-0">© 2024 CyberBridge. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

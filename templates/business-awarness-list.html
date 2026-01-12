@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Sessions - Cyber Bridge</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+
+<!-- Business Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3 fixed-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="{% static 'images/logo.png' %}" alt="Cyber Bridge Logo" style="height:50px; margin-right:10px;">
+            <span style="color:#00D9FF; font-weight:700;">Cyber Bridge</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#">Sessions</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Bookings</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Payments</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+
+                <li class="nav-item ms-3">
+                    <div class="navbar-user">
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i> {{ request.user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" style="background-color:#1a1f29; border:1px solid #1f2937;">
+                                <li><a class="dropdown-item" style="color:white;" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" style="color:#EF4444;" href="{% url 'logout' %}">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<main class="container-fluid my-5 px-4" style="padding-top:100px !important;">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title" style="margin:0;">
+            <i class="bi bi-file-earmark-text me-2"></i>All Session Bookings
+        </h2>
+        <a href="{% url 'booksession' %}" class="button-primary" style="text-decoration:none;">
+            <i class="bi bi-plus-circle me-1"></i> Book New Session
+        </a>
+    </div>
+
+    <!-- Table -->
+    <div class="card-dark p-3">
+        <div class="table-responsive">
+            <table class="table-dark">
+                <thead>
+                    <tr class="table-header">
+                        <th class="table-header-cell">ID</th>
+                        <th class="table-header-cell">Company Name</th>
+                        <th class="table-header-cell">Session Type</th>
+                        <th class="table-header-cell">Date</th>
+                        <th class="table-header-cell">Participants</th>
+                        <th class="table-header-cell">Package</th>
+                        <th class="table-header-cell">Amount</th>
+                        <th class="table-header-cell">Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <!-- REAL DATA -->
+                    {% for session in sessions %}
+                    <tr class="table-row">
+                        <td class="table-cell">{{ session.id }}</td>
+                        <td class="table-cell">{{ session.company_name }}</td>
+                        <td class="table-cell">{{ session.session_mode }}</td>
+                        <td class="table-cell">{{ session.preferred_date|date:"M d, Y" }}</td>
+                        <td class="table-cell">{{ session.participants }}</td>
+                        <td class="table-cell">{{ session.package }}</td>
+                        <td class="table-cell">₹{{ session.total_price }}</td>
+                        <td class="table-cell">{{ session.status }}</td>
+                    </tr>
+                    {% endfor %}
+
+                    <!-- EMPTY ROWS (MINIMUM 5) -->
+                    {% for _ in empty_rows %}
+                    <tr class="table-row">
+                        <td class="table-cell"></td>
+                        <td class="table-cell"></td>
+                        <td class="table-cell"></td>
+                        <td class="table-cell"></td>
+                        <td class="table-cell"></td>
+                        <td class="table-cell"></td>
+                        <td class="table-cell"></td>
+                        <td class="table-cell"></td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination (static for now) -->
+        <div style="display:flex; justify-content:center; margin-top:24px; gap:8px;">
+            <button class="button-secondary" style="padding:8px 16px;" disabled>
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="button-primary" style="padding:8px 16px;">1</button>
+            <button class="button-secondary" style="padding:8px 16px;">2</button>
+            <button class="button-secondary" style="padding:8px 16px;">3</button>
+            <button class="button-secondary" style="padding:8px 16px;">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- Footer -->
+<footer class="footer-dark">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h5 style="color:#00D9FF; margin-bottom:16px;">Cyber Bridge</h5>
+                <p class="text-gray">Connecting businesses with ethical hackers to secure your digital future.</p>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <h6 style="color:#F9FAFB; margin-bottom:16px;">Quick Links</h6>
+                <a href="#" class="footer-link">Dashboard</a>
+                <a href="#" class="footer-link">Sessions</a>
+                <a href="#" class="footer-link">Complaints</a>
+                <a href="#" class="footer-link">Book Session</a>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <h6 style="color:#F9FAFB; margin-bottom:16px;">Contact</h6>
+                <p class="text-gray"><i class="bi bi-envelope me-2"></i>support@cyberbridge.com</p>
+                <p class="text-gray"><i class="bi bi-telephone me-2"></i>+91 9876543210</p>
+            </div>
+        </div>
+
+        <hr style="border-color:#1f2937; margin:24px 0;">
+        <p class="text-center text-gray" style="margin:0;">&copy; 2025 Cyber Bridge. All rights reserved.</p>
+    </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

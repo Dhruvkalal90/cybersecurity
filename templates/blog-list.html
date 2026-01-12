@@ -1,0 +1,111 @@
+{% extends "base_user.html" %}
+{% block title %}Blogs{% endblock title %}
+{% block content %}
+
+
+    <main class="container my-5">
+
+        <!-- Page header -->
+        <div class="text-center mb-5">
+            <h1 class="page-title mb-3">CYBERBRIDGE BLOGS</h1>
+            <p style="color: #9CA3AF; max-width: 600px; margin: 0 auto; font-size: 16px;">
+                Latest insights and expert articles on cybersecurity threats and solutions
+            </p>
+        </div>
+
+        <!-- Filter/Search Bar -->
+        <form method="GET" class="card-dark p-3 mb-4">
+            <div class="row align-items-center g-3">
+
+                <!-- Search -->
+                <div class="col-md-4">
+                    <input type="text"
+                        name="search"
+                        value="{{ search }}"
+                        class="form-input"
+                        placeholder="🔍 Search blogs...">
+                </div>
+
+                <!-- Category -->
+                <div class="col-md-3">
+                    <select name="category" class="form-input">
+                        <option value="all" {% if selected_category == "all" %}selected{% endif %}>All Categories</option>
+                        {% for blog in blogs %}
+                            <option value="{{blog.category}}" {% if selected_category == "{{blog.category}}" %}selected{% endif %}>{{blog.category}}</option>
+                        {% endfor %}
+                        
+                    </select>
+                </div>
+
+                <!-- Sort -->
+                <div class="col-md-2">
+                    <select name="sort" class="form-input">
+                        <option value="latest" {% if selected_sort == "latest" %}selected{% endif %}>Latest</option>
+                        <option value="popular" {% if selected_sort == "popular" %}selected{% endif %}>Popular</option>
+                    </select>
+                </div>
+
+                <!-- Filter Button -->
+                <div class="col-md-3 text-md-end">
+                    <button class="button-primary" type="submit">Filter</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Blogs Grid -->
+        <div class="row g-4 mb-5">
+
+            {% for blog in blogs %}
+            <div class="col-lg-4 col-md-6">
+                <a href="{% url 'read_blog' blog.id %}" class="text-decoration-none">
+                    <div class="card-dark p-4 h-100" style="transition: transform 0.2s; border-radius: 12px;">
+
+                        <!-- Blog Image -->
+                        <div class="mb-3" style="height: 180px; border-radius: 8px; overflow: hidden;">
+                            <img src="{{ blog.featured_image.url }}" 
+                                 alt="Blog Image"
+                                 style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+
+                        <!-- Title -->
+                        <h3 class="mb-2" style="color: #F9FAFB; font-size: 18px; font-weight: 600; min-height: 48px;">
+                            {{ blog.title|truncatechars:60 }}
+                        </h3>
+
+                        <!-- Excerpt -->
+                        <p class="mb-3" style="font-size: 14px; line-height: 1.5; min-height: 60px; color: #c0c0c0ff;">
+                            {{ blog.content|truncatechars:140 }}
+                        </p>
+
+                        <!-- Bottom Meta -->
+                        <div style="display: flex; justify-content: space-between; align-items: center;
+                                    font-size: 13px; color: #ffffffff;">
+
+                            <!-- Author -->
+                            <span><i class="bi bi-person me-1"></i>{{ blog.author.username }}</span>
+
+                            <!-- Date -->
+                            <span><i class="bi bi-calendar3 me-1"></i>{{ blog.created_on|date:"d M Y" }}</span>
+
+                            <!-- Views -->
+                            <span><i class="bi bi-eye me-1"></i>{{ blog.views }}</span>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <p class="text-center text-gray mt-4">No blogs published yet.</p>
+            {% endfor %}
+
+        </div>
+
+    </main>
+    <script>
+        document.querySelectorAll('.card-dark').forEach(card => {
+            card.addEventListener('mouseenter', () => { card.style.transform = 'translateY(-4px)'; });
+            card.addEventListener('mouseleave', () => { card.style.transform = 'translateY(0)'; });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock content %}

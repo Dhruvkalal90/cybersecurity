@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ blog.title }} - Cyber Bridge</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-shield-check"></i>
+                <span>Cyber Bridge</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about/">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/blogs/">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact/">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4 my-md-5">
+
+        <!-- Back link -->
+        <a href="{% url 'blog_list' %}" 
+           class="text-cyan"
+           style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px;">
+            <i class="bi bi-arrow-left"></i>
+            <span>Back to blogs</span>
+        </a>
+
+        <!-- Blog wrapper -->
+        <article class="card-dark p-3 p-md-4" style="max-width: 900px; margin: 0 auto;">
+
+            <!-- Title + meta -->
+            <header class="mb-3 mb-md-4">
+
+                <h1 class="page-title" style="margin-bottom: 8px;">
+                    {{ blog.title }}
+                </h1>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; 
+                    font-size: 14px; color: #9CA3AF;">
+
+                    <!-- Author -->
+                    <span style="display: inline-flex; align-items: center; gap: 4px;">
+                        <i class="bi bi-person"></i>
+                        <span>{{ blog.author.username }}</span>
+                    </span>
+
+                    <span>•</span>
+
+                    <!-- Date -->
+                    <span style="display: inline-flex; align-items: center; gap: 4px;">
+                        <i class="bi bi-calendar3"></i>
+                        <span>{{ blog.created_on|date:"d M Y" }}</span>
+                    </span>
+
+                    <span>•</span>
+
+                    <!-- Views -->
+                    <span style="display: inline-flex; align-items: center; gap: 4px;">
+                        <i class="bi bi-eye"></i>
+                        <span>{{ blog.views }}</span>
+                    </span>
+                </div>
+            </header>
+
+            <!-- Featured image -->
+            {% if blog.featured_image %}
+            <div class="mb-3 mb-md-4">
+                <img src="{{ blog.featured_image.url }}"
+                     alt="{{ blog.title }}"
+                     style="width: 100%; border-radius: 8px; object-fit: cover;">
+            </div>
+            {% endif %}
+
+            <!-- Blog content -->
+            <section class="blog-content" 
+                     style="color: #E5E7EB; line-height: 1.7; font-size: 15px;">
+                {{ blog.content|linebreaks }}
+            </section>
+
+            <!-- Category badge -->
+            <section class="mt-4">
+                <span class="badge bg-info text-dark">
+                    {{ blog.category }}
+                </span>
+            </section>
+
+        </article>
+
+        <!-- Related posts -->
+        <section class="mt-4 mt-md-5" 
+                 style="max-width: 900px; margin: 0 auto;">
+            <h2 style="color: #F9FAFB; font-size: 18px; margin-bottom: 12px;">
+                More from Cyber Bridge
+            </h2>
+
+            <div class="row g-3">
+
+                {% for r in related %}
+                <div class="col-md-4">
+                    <a href="{% url 'read_blog' r.id %}" class="text-decoration-none">
+                        <div class="card-dark p-3" style="height: 100%;">
+                            <h3 style="font-size: 15px; 
+                                       color: #E5E7EB; 
+                                       min-height: 36px;">
+                                {{ r.title|truncatewords:6 }}
+                            </h3>
+                            <p style="font-size: 13px; 
+                                      color: #9CA3AF; 
+                                      min-height: 36px;">
+                                {{ r.content|truncatewords:12 }}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                <p class="text-gray">No related posts yet.</p>
+                {% endfor %}
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+            <hr style="border-color: #1f2937; margin: 24px 0;">
+            <div class="text-center">
+                <p class="text-gray" style="margin: 0;">
+                    © 2024 Cyber Bridge. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

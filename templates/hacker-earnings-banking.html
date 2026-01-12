@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earnings & Banking - Cyber Bridge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="hacker.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3 fixed-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="logo.png" alt="Cyber Bridge Logo" style="height:50px; margin-right:10px;">
+            <span style="color:#00D9FF; font-weight:700;">Cyber Bridge</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item"><a class="nav-link active" href="hacker-dashboard.html">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-apply-complaint.html">Complaints</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-my-work.html">My Work</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-blog-management.html">Blogs</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-earnings-banking.html">Earnings</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-profile.html">Profile</a></li>
+                <li class="nav-item ms-3">
+                    <div class="navbar-user">
+                        <div class="notification-icon">
+                            <i class="bi bi-bell"></i>
+                            <span class="notification-badge">0</span>
+                        </div>
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i> User
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" style="background-color: #1a1f29; border: 1px solid #1f2937;">
+                                <li><a class="dropdown-item" href="#" style="color: #e5e7eb;">Profile</a></li>
+                                <li><a class="dropdown-item" href="index.html" style="color: #EF4444;">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    
+    <main class="container my-5">
+        
+        <!-- Back link -->
+        <a href="hacker-dashboard.html" class="text-cyan back-link">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+        
+        <!-- Page title -->
+        <h1 class="page-title">Earnings & Banking</h1>
+        <p class="page-subtitle">Track your earnings and manage banking information.</p>
+        
+        <!-- Total Earnings Card -->
+        <div class="row row-spacing">
+            <div class="col-md-4 mb-3">
+                <div class="card-dark earnings-card">
+                    <div class="earnings-label">Total Earnings</div>
+                    <div class="earnings-amount earnings-amount-cyan">₹0</div>
+                    <div class="earnings-subtext">All time earnings</div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card-dark earnings-card">
+                    <div class="earnings-label">This Month</div>
+                    <div class="earnings-amount earnings-amount-success">₹0</div>
+                    <div class="earnings-subtext"></div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card-dark earnings-card">
+                    <div class="earnings-label">Pending</div>
+                    <div class="earnings-amount earnings-amount-warning">₹0</div>
+                    <div class="earnings-subtext">Awaiting payment</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payment History Table -->
+        <div class="card-dark card-spacing">
+            <h3 class="section-heading">
+                <i class="bi bi-clock-history me-2"></i>Payment History
+            </h3>
+            
+            <div class="table-responsive">
+                <table class="table-dark">
+                    <thead>
+                        <tr class="table-header">
+                            <th class="table-header-cell">Date</th>
+                            <th class="table-header-cell">Complaint ID</th>
+                            <th class="table-header-cell">Amount</th>
+                            <th class="table-header-cell">Method</th>
+                            <th class="table-header-cell">Status</th>
+                            <th class="table-header-cell">Invoice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Sample Row 1 -->
+                        <tr class="table-row">
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell text-cyan payment-amount"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"><span class="badge badge-resolved"></span></td>
+                            <td class="table-cell">
+                            </td>
+                        </tr>
+                        
+                        <!-- Sample Row 2 -->
+                        <tr class="table-row">
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell text-cyan payment-amount"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"><span class="badge badge-resolved"></span></td>
+                            <td class="table-cell">
+                            </td>
+                        </tr>
+                        
+                        <!-- Sample Row 3 -->
+                        <tr class="table-row">
+                            <td class="table-cell"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell text-cyan payment-amount"></td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell"><span class="badge badge-resolved"></span></td>
+                            <td class="table-cell">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Banking Information Section -->
+        <div class="card-dark">
+            <h3 class="section-heading">
+                <i class="bi bi-bank me-2"></i>Banking Information
+            </h3>
+            
+            <form id="bankingForm">
+                
+                <!-- Account Holder Name -->
+                <div class="form-group">
+                    <label class="form-label">Account Holder Name *</label>
+                    <input type="text" class="form-input" placeholder="Full name as per bank account" required>
+                </div>
+                
+                <!-- Bank Name -->
+                <div class="form-group">
+                    <label class="form-label">Bank Name *</label>
+                    <input type="text" class="form-input" placeholder="e.g., State Bank of India" required>
+                </div>
+                
+                <!-- Account Number -->
+                <div class="form-group">
+                    <label class="form-label">Account Number *</label>
+                    <input type="text" class="form-input" placeholder="Enter account number" required>
+                    <small class="form-hint">
+                        <i class="bi bi-shield-lock"></i> Your account details are encrypted and secure
+                    </small>
+                </div>
+                
+                <!-- IFSC Code -->
+                <div class="form-group">
+                    <label class="form-label">IFSC Code *</label>
+                    <input type="text" class="form-input" placeholder="e.g., SBIN0001234" pattern="[A-Z]{4}0[A-Z0-9]{6}" required>
+                </div>
+                
+                <!-- UPI ID (Optional) -->
+                <div class="form-group">
+                    <label class="form-label">UPI ID (optional)</label>
+                    <input type="text" class="form-input" placeholder="yourname@upi">
+                    <small class="form-hint">
+                        For faster payments
+                    </small>
+                </div>
+                
+                <!-- Upload Cancelled Cheque -->
+                <div class="form-group">
+                    <label class="form-label">Upload Cancelled Cheque (optional)</label>
+                    <div class="file-drop-zone" id="chequeUploadZone">
+                        <i class="bi bi-file-earmark-image file-upload-icon"></i>
+                        <p class="file-upload-text">Click to upload cancelled cheque image</p>
+                        <p class="file-upload-info">JPG, PNG (Max 5MB)</p>
+                        <input type="file" id="chequeInput" accept="image/*,.pdf" class="profile-photo-input">
+                    </div>
+                    <div id="chequeFileName" class="cert-file-name"></div>
+                </div>
+                
+                <!-- Save Banking Info Button -->
+                <button type="submit" class="button-primary full-width-button">
+                    <i class="bi bi-check-circle me-2"></i>Save Banking Information
+                </button>
+                
+            </form>
+        </div>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-cyan mb-3">Cyber Bridge</h5>
+                    <p class="text-gray">Connecting cybersecurity experts with organizations in need of protection.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Quick Links</h6>
+                    <a href="#" class="footer-link">About Us</a>
+                    <a href="#" class="footer-link">Services</a>
+                    <a href="#" class="footer-link">Contact</a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Follow Us</h6>
+                    <div>
+                        <i class="bi bi-twitter footer-social-icon"></i>
+                        <i class="bi bi-linkedin footer-social-icon"></i>
+                        <i class="bi bi-github footer-social-icon"></i>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-color: #1f2937; margin: 30px 0;">
+            <p class="text-gray text-center mb-0">&copy; 2024 Cyber Bridge. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('chequeUploadZone').addEventListener('click', function() {
+            document.getElementById('chequeInput').click();
+        });
+        
+        document.getElementById('chequeInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('chequeFileName').innerHTML = `
+                    <i class="bi bi-file-earmark-image file-icon-image"></i>
+                    <span class="file-name-display">${file.name}</span>
+                    <span class="file-size-display">(${(file.size / 1024).toFixed(1)} KB)</span>
+                `;
+            }
+        });
+        
+        document.getElementById('bankingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Banking information saved successfully!');
+        });
+    </script>
+</body>
+</html>

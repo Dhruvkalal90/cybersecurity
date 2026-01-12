@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Work - Cyber Bridge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="hacker.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3 fixed-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="logo.png" alt="Cyber Bridge Logo" style="height:50px; margin-right:10px;">
+            <span style="color:#00D9FF; font-weight:700;">Cyber Bridge</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item"><a class="nav-link active" href="hacker-dashboard.html">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-apply-complaint.html">Complaints</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-my-work.html">My Work</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-blog-management.html">Blogs</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-earnings-banking.html">Earnings</a></li>
+                <li class="nav-item"><a class="nav-link" href="hacker-profile.html">Profile</a></li>
+                <li class="nav-item ms-3">
+                    <div class="navbar-user">
+                        <div class="notification-icon">
+                            <i class="bi bi-bell"></i>
+                            <span class="notification-badge">0</span>
+                        </div>
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i> User
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" style="background-color: #1a1f29; border: 1px solid #1f2937;">
+                                <li><a class="dropdown-item" href="#" style="color: #e5e7eb;">Profile</a></li>
+                                <li><a class="dropdown-item" href="index.html" style="color: #EF4444;">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    
+    <main class="container my-5">
+        
+        <!-- Back link -->
+        <a href="hacker-dashboard.html" class="text-cyan back-link">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+        
+        <!-- Page title -->
+        <h1 class="page-title">My Work</h1>
+        <p class="page-subtitle">Track and manage all your assigned complaints.</p>
+        
+        <!-- Bootstrap Tabs -->
+        <ul class="nav nav-tabs blog-tabs" id="workTabs">
+            <li class="nav-item">
+                <a class="nav-link blog-tab-link active" data-bs-toggle="tab" href="#active">Active</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link blog-tab-link" data-bs-toggle="tab" href="#completed">Completed</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link blog-tab-link" data-bs-toggle="tab" href="#rejected">Rejected</a>
+            </li>
+        </ul>
+        
+        <div class="tab-content">
+            
+            <!-- ACTIVE TAB -->
+            <div class="tab-pane fade show active" id="active">
+                <div class="row">
+                    
+                    <!-- Empty state -->
+                    <div class="col-12">
+                        <div class="blog-empty-state">
+                            <i class="bi bi-inbox blog-empty-icon"></i>
+                            <p class="blog-empty-text">No active work at the moment</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- COMPLETED TAB -->
+            <div class="tab-pane fade" id="completed">
+                <div class="row">
+                    
+                    <!-- Empty state -->
+                    <div class="col-12">
+                        <div class="blog-empty-state">
+                            <i class="bi bi-check-circle blog-empty-icon"></i>
+                            <p class="blog-empty-text">No completed work yet</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- REJECTED TAB -->
+            <div class="tab-pane fade" id="rejected">
+                <div class="row">
+                    
+                    <!-- Empty state -->
+                    <div class="col-12">
+                        <div class="blog-empty-state">
+                            <i class="bi bi-check-circle blog-empty-icon"></i>
+                            <p class="blog-empty-text">No rejected work</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-cyan mb-3">Cyber Bridge</h5>
+                    <p class="text-gray">Connecting cybersecurity experts with organizations in need of protection.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Quick Links</h6>
+                    <a href="#" class="footer-link">About Us</a>
+                    <a href="#" class="footer-link">Services</a>
+                    <a href="#" class="footer-link">Contact</a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Follow Us</h6>
+                    <div>
+                        <i class="bi bi-twitter footer-social-icon"></i>
+                        <i class="bi bi-linkedin footer-social-icon"></i>
+                        <i class="bi bi-github footer-social-icon"></i>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-color: #1f2937; margin: 30px 0;">
+            <p class="text-gray text-center mb-0">&copy; 2024 Cyber Bridge. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Tab click handler
+        document.querySelectorAll('.blog-tab-link').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.blog-tab-link').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

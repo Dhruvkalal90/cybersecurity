@@ -1,0 +1,564 @@
+{% extends "base_user.html" %}
+{% block title %}{{request.user.role.name.upper}}{% endblock title %}
+
+{% block content %}
+        
+{% if request.user.role and request.user.role.name == "HACKER" %}
+<!-- ===== MAIN CONTAINER ===== -->
+<main class="container my-5" style="margin-top: 120px !important;">
+    {% if messages %}
+        <div class="mb-3 my-5">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+        <!-- END MESSAGE AREA -->
+    <!-- Page title -->
+    <h1 class="page-title">Hacker Dashboard</h1>
+    <p class="page-subtitle">Welcome back, {{request.user.username}}! Here's your overview.</p>
+    
+    <!-- STAT CARDS ROW -->
+    <div class="row mb-5">
+        
+        <!-- Card 1: Active Work -->
+        <div class="col-md-3 mb-3">
+            <div class="card-stat card-stat-cyan">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-stat-number card-stat-number-cyan">0</div>
+                        <div class="card-stat-label">Active Work</div>
+                    </div>
+                    <i class="bi bi-hourglass-split card-stat-icon card-stat-icon-cyan"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2: Completed -->
+        <div class="col-md-3 mb-3">
+            <div class="card-stat card-stat-success">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-stat-number card-stat-number-success">0</div>
+                        <div class="card-stat-label">Completed</div>
+                    </div>
+                    <i class="bi bi-check-circle card-stat-icon card-stat-icon-success"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3: Total Earnings -->
+        <div class="col-md-4 mb-3">
+            <div class="card-stat card-stat-info">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-stat-number card-stat-number-warning">₹0</div>
+                        <div class="card-stat-label">Total Earnings</div>
+                    </div>
+                    <i class="bi bi-wallet2 card-stat-icon card-stat-icon-warning"></i>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- ACTION BUTTONS ROW -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="d-flex gap-3 flex-wrap">
+                <a href="{% url "dashboard" %}" class="button-primary">
+                    <i class="bi bi-search me-2"></i>Browse Complaints
+                </a>
+                <a href="hacker-my-work.html" class="button-secondary">
+                    <i class="bi bi-briefcase me-2"></i>My Work
+                </a>
+                <a href="{% url "blog_mgmt" %}" class="button-secondary">
+                    <i class="bi bi-pencil-square me-2"></i>Manage Blogs
+                </a>
+                <a href="hacker-earnings-banking.html" class="button-secondary">
+                    <i class="bi bi-cash-coin me-2"></i>View Earnings
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MAIN CONTENT: OPPORTUNITIES SECTION -->
+    <div class="row">
+    <div class="col-12">
+        
+        <div class="card-dark opportunities-card">
+            <h3 class="opportunities-title">
+                <i class="bi bi-briefcase me-2"></i>New Opportunities
+            </h3>
+
+            {% if opportunities %}
+                {% for c in opportunities %}
+                <div class="opportunity-item">
+
+                    <div class="opportunity-header">
+                        <div>
+                            <h4 class="opportunity-title">{{ c.title }}</h4>
+
+                            <span class="opportunity-meta">
+                                ID #{{ c.id }} • {{ c.date_submitted|timesince }} ago
+                            </span>
+                        </div>
+
+                        {% if c.date_submitted|timesince < "1 day" %}
+                        <span class="badge badge-pending opportunity-badge">NEW</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="opportunity-details">
+                        <span class="badge badge-info opportunity-category">{{ c.category|title }}</span>
+
+                        <span class="opportunity-price">
+                            {% if c.service_type == "COMPLETE" %}
+                                ₹40k - ₹50k
+                            {% elif c.service_type == "GUIDE" %}
+                                ₹15k - ₹30k
+                            {% else %}
+                                ₹10k - ₹15k
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <a href="{% url 'hacker_apply_complaint' %}" class="opportunity-link">
+                        View Details <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center text-gray py-3">
+                    No new opportunities available.
+                </div>
+            {% endif %}
+
+            <div class="text-center mt-3">
+                <a href="{% url 'hacker_apply_complaint' %}" class="view-all-link">
+                    View All Complaints <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+    
+</main>
+
+
+{% elif request.user.role and request.user.role.name == "BUSINESS" %}
+<!-- ===== MAIN CONTAINER ===== -->
+<main class="container" style="margin-top: 120px; margin-bottom: 80px;">
+
+    {% if messages %}
+    <div class="mb-3 my-5">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Page Title -->
+    <h1 class="page-title">Business Dashboard</h1>
+    <p class="text-gray mb-4">Welcome back! Here's your overview.</p>
+
+    <!-- ================= STAT CARDS ================= -->
+    <div class="row mb-5">
+
+        <div class="col-md-3 mb-3">
+            <div class="card-stat card-stat-cyan">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <div class="card-stat-number card-stat-number-cyan">{{ total }}</div>
+                        <div class="card-stat-label">Total Complaints</div>
+                    </div>
+                    <i class="bi bi-file-text card-stat-icon card-stat-icon-cyan"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card-stat card-stat-warning">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <div class="card-stat-number card-stat-number-warning">{{ pending }}</div>
+                        <div class="card-stat-label">Pending</div>
+                    </div>
+                    <i class="bi bi-clock-history card-stat-icon card-stat-icon-warning"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card-stat card-stat-info">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <div class="card-stat-number card-stat-number-info">{{ in_progress }}</div>
+                        <div class="card-stat-label">In Progress</div>
+                    </div>
+                    <i class="bi bi-arrow-repeat card-stat-icon card-stat-icon-info"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card-stat card-stat-success">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <div class="card-stat-number card-stat-number-success">{{ resolved }}</div>
+                        <div class="card-stat-label">Resolved</div>
+                    </div>
+                    <i class="bi bi-check-circle card-stat-icon card-stat-icon-success"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= ACTION BUTTONS ================= -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="d-flex gap-3 flex-wrap">
+                <a href="{% url 'submit_complaint' %}" class="button-primary">
+                    <i class="bi bi-plus-circle me-2"></i>Submit Complaint
+                </a>
+
+                <a href="{% url 'booksession' %}" class="button-secondary">
+                    <i class="bi bi-calendar-check me-2"></i>Book Awareness Session
+                </a>
+
+                <a href="" class="button-secondary">
+                    <i class="bi bi-wallet2 me-2"></i>View Payments
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= RECENT COMPLAINTS TABLE ================= -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card-dark p-4">
+                <h3 class="section-title">Recent Complaints</h3>
+
+                <div class="table-responsive">
+                    <table class="table-dark">
+                        <thead>
+                            <tr class="table-header">
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for c in recent_complaints %}
+                            <tr class="table-row">
+                                <td>{{ c.id }}</td>
+                                <td>{{ c.title }}</td>
+                                <td>
+                                    <span class="badge badge-info">{{ c.category }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge 
+                                        {% if c.status == 'Pending' %}badge-pending
+                                        {% elif c.status == 'In Progress' %}badge-info
+                                        {% else %}badge-success
+                                        {% endif %}
+                                    ">
+                                    {{ c.status }}
+                                    </span>
+                                </td>
+                                <td>{{ c.date_submitted|date:"Y-m-d" }}</td>
+                                <td>
+                                    <a href="" class="text-cyan">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">No complaints yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{% url 'business_complaint_list' %}" class="text-cyan fw-bold">
+                        View All Complaints <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+{% elif request.user.role and request.user.role.name == "ADMIN" %}
+
+    <main class="container-fluid my-5 px-4">
+        
+        <!-- Page title -->
+        <h1 class="page-title">Admin Dashboard</h1>
+        <p style="color: #9CA3AF; margin-bottom: 40px;">System overview and management.</p>
+        
+        <!-- STAT CARDS ROW (5 cards using admin-stat-grid) -->
+        <div class="admin-stat-grid">
+            
+            <!-- Card 1: Total Users -->
+            <div class="card-stat card-stat-cyan">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-stat-number card-stat-number-cyan">0</div>
+                        <div class="card-stat-label">Total Users</div>
+                    </div>
+                    <i class="bi bi-people card-stat-icon card-stat-icon-cyan"></i>
+                </div>
+            </div>
+            
+            <!-- Card 2: Complaints -->
+            <div class="card-stat card-stat-info">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-stat-number card-stat-number-info">0</div>
+                        <div class="card-stat-label">Complaints</div>
+                    </div>
+                    <i class="bi bi-file-earmark-text card-stat-icon card-stat-icon-info"></i>
+                </div>
+            </div>
+            
+            <!-- Card 3: Active Hackers -->
+            <div class="card-stat card-stat-success">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-stat-number card-stat-number-success">0</div>
+                        <div class="card-stat-label">Active Hackers</div>
+                    </div>
+                    <i class="bi bi-person-check card-stat-icon card-stat-icon-success"></i>
+                </div>
+            </div>
+            
+            <!-- Card 4: Total Revenue -->
+            <div class="card-stat card-stat-warning">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-stat-number card-stat-number-warning">₹0</div>
+                        <div class="card-stat-label">Total Revenue</div>
+                    </div>
+                    <i class="bi bi-currency-rupee card-stat-icon card-stat-icon-warning"></i>
+                </div>
+            </div>
+            
+            <!-- Card 5: Pending Reviews -->
+            <div class="card-stat" style="background-color: #1a1f29; border: 2px solid #EF4444;">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-stat-number" style="color: #EF4444; text-shadow: 0 0 20px rgba(239, 68, 68, 0.4);">0</div>
+                        <div class="card-stat-label">Pending Reviews</div>
+                    </div>
+                    <i class="bi bi-clock-history card-stat-icon" style="color: #EF4444; opacity: 0.5;"></i>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- MAIN CONTENT: 2 COLUMNS -->
+        <div class="row">
+            
+            <!-- LEFT COLUMN (60%) -->
+            <div class="col-lg-8 mb-4">
+                
+                <!-- Recent Complaints -->
+                <div class="card-dark p-4 mb-4">
+                    <h3 style="font-size: 20px; color: #F9FAFB; margin-bottom: 24px;">
+                        <i class="bi bi-file-earmark-text me-2"></i>Recent Complaints
+                    </h3>
+                    
+                    <div class="admin-table-wrapper">
+                        <table class="table-dark admin-table">
+                            <thead>
+                                <tr class="table-header">
+                                    <th class="table-header-cell">ID</th>
+                                    <th class="table-header-cell">Title</th>
+                                    <th class="table-header-cell">Business</th>
+                                    <th class="table-header-cell">Status</th>
+                                    <th class="table-header-cell">Date</th>
+                                    <th class="table-header-cell">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row">
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"><span class="badge badge-pending"></span></td>
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell">
+                                        <button class="table-action-btn" title="View Details"><i class="bi bi-eye"></i></button>
+                                    </td>
+                                </tr>
+                               <tr class="table-row">
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"><span class="badge badge-pending"></span></td>
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell">
+                                        <button class="table-action-btn" title="View Details"><i class="bi bi-eye"></i></button>
+                                    </td>
+                                </tr>
+                              <tr class="table-row">
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"><span class="badge badge-pending"></span></td>
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell">
+                                        <button class="table-action-btn" title="View Details"><i class="bi bi-eye"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <a href="manage-complaints.html" class="text-cyan" style="text-decoration: none; font-weight: 600;">
+                            View All Complaints <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Recent Users -->
+                <div class="card-dark p-4">
+                    <h3 style="font-size: 20px; color: #F9FAFB; margin-bottom: 24px;">
+                        <i class="bi bi-people me-2"></i>Recent User Registrations
+                    </h3>
+                    
+                    <div class="admin-table-wrapper">
+                        <table class="table-dark admin-table">
+                            <thead>
+                                <tr class="table-header">
+                                    <th class="table-header-cell">Name</th>
+                                    <th class="table-header-cell">Email</th>
+                                    <th class="table-header-cell">Type</th>
+                                    <th class="table-header-cell">Status</th>
+                                    <th class="table-header-cell">Joined</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row">
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"><span class="badge badge-info"></span></td>
+                                    <td class="table-cell"><span class="badge badge-active"></span></td>
+                                    <td class="table-cell"></td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"><span class="badge badge-info"></span></td>
+                                    <td class="table-cell"><span class="badge badge-active"></span></td>
+                                    <td class="table-cell"></td>
+                                </tr>
+                               <tr class="table-row">
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"></td>
+                                    <td class="table-cell"><span class="badge badge-info"></span></td>
+                                    <td class="table-cell"><span class="badge badge-active"></span></td>
+                                    <td class="table-cell"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <a href="admin-manage-user.html" class="text-cyan" style="text-decoration: none; font-weight: 600;">
+                            View All Users <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- RIGHT COLUMN (40%) -->
+            <div class="col-lg-4">
+                
+                <!-- Quick Actions -->
+                <div class="card-dark p-4 mb-4">
+                    <h3 style="font-size: 18px; color: #F9FAFB; margin-bottom: 20px;">
+                        <i class="bi bi-lightning me-2"></i>Quick Actions
+                    </h3>
+                    
+                    <div class="admin-quick-actions">
+                        <a href="admin-manage-user.html" class="button-secondary admin-action-btn" style="text-decoration: none;">
+                            <i class="bi bi-person-plus"></i>Manage Users
+                        </a>
+                        <a href="admin-complaint.html" class="button-secondary admin-action-btn" style="text-decoration: none;">
+                            <i class="bi bi-file-earmark-check"></i>Review Complaints
+                        </a>
+                        <a href="admin-manage-content.html" class="button-secondary admin-action-btn" style="text-decoration: none;">
+                            <i class="bi bi-pencil-square"></i>Manage Content
+                        </a>
+                        <a href="admin-manage-payment.html" class="button-secondary admin-action-btn" style="text-decoration: none;">
+                            <i class="bi bi-wallet2"></i>Payment Management
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- System Status -->
+                <div class="card-dark p-4">
+                    <h3 style="font-size: 18px; color: #F9FAFB; margin-bottom: 20px;">
+                        <i class="bi bi-gear me-2"></i>System Status
+                    </h3>
+                    
+                    <div class="status-item">
+                        <div class="status-label">Server Status</div>
+                        <span class="badge badge-resolved">Online</span>
+                    </div>
+                    
+                    <div class="status-item">
+                        <div class="status-label">Database</div>
+                        <span class="badge badge-resolved">Connected</span>
+                    </div>
+                    
+                    <div class="status-item">
+                        <div class="status-label">Payment Gateway</div>
+                        <span class="badge badge-resolved">Active</span>
+                    </div>
+                    
+                    <div class="status-item">
+                        <div class="status-label">Last Backup</div>
+                        <div class="status-value">2 hours ago</div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </main>
+{% endif %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  var alertList = document.querySelectorAll('.alert');
+  alertList.forEach(function (alertEl) {
+      var bsAlert = new bootstrap.Alert(alertEl);
+      setTimeout(function () {
+          bsAlert.close();
+      }, 3000); // 3 seconds
+  });
+</script>
+{% endblock content %}

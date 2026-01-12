@@ -1,0 +1,77 @@
+{% extends "base_user.html" %}
+{% block title %}Complaints list{% endblock title %}
+{% block content %}
+    
+    <main class="container-fluid my-5 px-4" style="padding-top: 100px !important;">
+        
+        <!-- Header row: title + action -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title" style="margin: 0;">
+                <i class="bi bi-file-earmark-text me-2"></i>All Complaints
+            </h2>
+            <a href="submit-complaint.html" class="button-primary" style="text-decoration: none;">
+                <i class="bi bi-plus-circle me-1"></i> File New Complaint
+            </a>
+        </div>
+        
+        <!-- Complaints table -->
+        <div class="card-dark p-3">
+            <div class="table-responsive">
+                <table class="table-dark">
+                    <thead>
+                        <tr class="table-header">
+                            <th class="table-header-cell">ID</th>
+                            <th class="table-header-cell">Title</th>
+                            <th class="table-header-cell">Category</th>
+                            <th class="table-header-cell">Priority</th>
+                            <th class="table-header-cell">Submitted on</th>
+                            <th class="table-header-cell">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    <!-- REAL DATA -->
+                    {% for complaint in complaints %}
+                    <tr class="table-row">
+                        <td class="table-cell">{{ complaint.id }}</td>
+                        <td class="table-cell">{{ complaint.title }}</td>
+                        <td class="table-cell">{{ complaint.category }}</td>
+                        <td class="table-cell">{{ complaint.priority }}</td>
+                        <td class="table-cell">{{ complaint.date_submitted|date:"M d, Y" }}</td>
+                        <td class="table-cell">{{ complaint.status }}</td>
+                    </tr>
+                    {% endfor %}
+
+                    <!-- EMPTY ROWS (MINIMUM 5) -->
+                    {% for _ in empty_rows %}
+                    <tr class="table-row">
+                        <td class="table-cell"></td>
+                        <td class="table-cell"></td>
+                        <td class="table-cell"></td>
+                        <td class="table-cell"></td>
+                        <td class="table-cell"></td>
+                        <td class="table-cell"></td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div style="display: flex; justify-content: center; margin-top: 24px; gap: 8px;">
+                <button class="button-secondary" style="padding: 8px 16px;" disabled>
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <button class="button-primary" style="padding: 8px 16px;">1</button>
+                <button class="button-secondary" style="padding: 8px 16px;">2</button>
+                <button class="button-secondary" style="padding: 8px 16px;">3</button>
+                <button class="button-secondary" style="padding: 8px 16px;">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {% endblock content %}

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<!-- ===== HERO SECTION ===== -->
+<section class="hero-section text-center text-white">
+    <div class="container mt-5 pt-5">
+        <h1 style="font-size:56px; color:#00D9FF; text-shadow:0 0 30px rgba(0,217,255,0.5); letter-spacing:-1px; line-height:1.2;">
+            Bridging Businesses with Ethical Hackers
+        </h1>
+        <p class="mt-4 text-gray" style="font-size:20px; color:#9CA3AF; max-width:700px; margin:auto;">
+            Connect with certified security experts to identify vulnerabilities, resolve incidents, and strengthen your cybersecurity posture.
+        </p>
+        <div class="d-flex justify-content-center gap-3 mt-5 align-items-center">
+            <a href="{% url "signup" %}" class="button-primary">Get Started</a>
+            <a href="{% url "login" %}" class="login-link">Login</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FEATURES SECTION ===== -->
+<section id="features" class="container text-center mt-5 pt-5">
+    <h2 class="section-title mb-5">Why Choose Cyber Bridge</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card-dark feature-card">
+                <i class="bi bi-file-earmark-text" style="font-size:72px; color:#00D9FF;"></i>
+                <h4 class="mt-4 fw-bold">Complaint Management</h4>
+                <p class="text-gray mt-3">
+                    Submit and track cybersecurity incidents with ease. Get expert help when you need it.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card-dark feature-card">
+                <i class="bi bi-shield-check" style="font-size:72px; color:#00D9FF;"></i>
+                <h4 class="mt-4 fw-bold">Certified Ethical Hackers</h4>
+                <p class="text-gray mt-3">
+                    Connect with verified security professionals. Get solutions from experienced experts.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card-dark feature-card">
+                <i class="bi bi-mortarboard" style="font-size:72px; color:#00D9FF;"></i>
+                <h4 class="mt-4 fw-bold">Awareness Sessions</h4>
+                <p class="text-gray mt-3">
+                    Book training sessions for your team. Stay ahead of cyber threats with expert guidance.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== HOW IT WORKS SECTION ===== -->
+<section class="how-section text-center mt-5">
+    <div class="container">
+        <h2 class="section-title text-white mb-5">How It Works</h2>
+        <div class="row g-4 align-items-center justify-content-center">
+            <div class="col-md-3">
+                <div class="number-badge">1</div>
+                <h5 class="fw-bold text-white">Submit Complaint</h5>
+                <p class="text-gray">Report your cybersecurity issue with details</p>
+            </div>
+            <div class="col-md-3">
+                <div class="number-badge">2</div>
+                <h5 class="fw-bold text-white">Hacker Applies</h5>
+                <p class="text-gray">Certified hackers review and apply to resolve</p>
+            </div>
+            <div class="col-md-3">
+                <div class="number-badge">3</div>
+                <h5 class="fw-bold text-white">Get Solution</h5>
+                <p class="text-gray">Expert analyzes and provides detailed report</p>
+            </div>
+            <div class="col-md-3">
+                <div class="number-badge">4</div>
+                <h5 class="fw-bold text-white">Issue Resolved</h5>
+                <p class="text-gray">Implement solution and secure your business</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== STATS SECTION ===== -->
+<section class="container text-center mt-5 pt-5">
+    <h2 class="section-title mb-5">Our Impact</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="stat-box">
+                <h1>100+</h1>
+                <p>Businesses Protected</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-box">
+                <h1>50+</h1>
+                <p>Ethical Hackers</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-box">
+                <h1>200+</h1>
+                <p>Issues Resolved</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CONTACT SECTION ===== -->
+<section id="contact" class="container mt-5 mb-5">
+    <h2 class="section-title text-center mb-5">Get In Touch</h2>
+    <div class="card-dark p-4 mx-auto" style="max-width:600px;">
+        <form id="contactForm">
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-input" placeholder="Your name" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" placeholder="Your email" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Subject</label>
+                <input type="text" class="form-input" placeholder="Message subject" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Message</label>
+                <textarea rows="5" class="form-input" placeholder="Your message" required></textarea>
+            </div>
+            <button type="submit" class="button-primary w-100">Send Message</button>
+        </form>
+    </div>
+</section>
+{% endblock  %}

@@ -1,0 +1,620 @@
+/* ==============================
+   HACKER PAGES - ADDITIONAL STYLES
+   ============================== */
+
+/* ---------- OPPORTUNITIES SECTION ---------- */
+.opportunities-card {
+    padding: 24px;
+}
+
+.opportunities-title {
+    font-size: 20px;
+    color: #F9FAFB;
+    margin-bottom: 24px;
+}
+
+.opportunity-item {
+    border-bottom: 1px solid #374151;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+}
+
+.opportunity-item-last {
+    border-bottom: none;
+}
+
+.opportunity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 12px;
+}
+
+.opportunity-title {
+    font-size: 16px;
+    color: #00D9FF;
+    margin: 0 0 6px 0;
+}
+
+.opportunity-meta {
+    color: #6B7280;
+    font-size: 12px;
+}
+
+.opportunity-badge {
+    font-size: 11px;
+}
+
+.opportunity-details {
+    margin-bottom: 12px;
+}
+
+.opportunity-category {
+    font-size: 11px;
+}
+
+.opportunity-price {
+    color: #00D9FF;
+    font-size: 13px;
+    margin-left: 16px;
+}
+
+.opportunity-link {
+    color: #00D9FF;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.opportunity-link:hover {
+    color: #00b8e6;
+}
+
+.view-all-link {
+    color: #00D9FF;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.view-all-link:hover {
+    color: #00b8e6;
+}
+
+/* ---------- LAYOUT ---------- */
+.profile-container {
+    max-width: 900px;
+}
+
+.back-link {
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 24px;
+    color: #00D9FF;
+}
+
+.back-link:hover {
+    color: #00b8e6;
+}
+
+.page-subtitle {
+    color: #9CA3AF;
+    margin-bottom: 40px;
+}
+
+/* ---------- PROFILE PHOTO ---------- */
+.profile-photo-wrapper {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.profile-photo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #00D9FF, #0099CC);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: #0F1419;
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+
+.profile-photo-label {
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.profile-photo-input {
+    display: none;
+}
+
+/* ---------- FORM ELEMENTS ---------- */
+.form-input-readonly {
+    background: #1A1F2E;
+    color: #6B7280;
+    cursor: not-allowed;
+}
+
+.form-info-text {
+    color: #6B7280;
+    font-size: 12px;
+    display: block;
+    margin-top: 4px;
+}
+
+.cert-upload-zone {
+    border: 2px dashed #374151;
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    background: #1A1F2E;
+    cursor: pointer;
+}
+
+.cert-upload-icon {
+    font-size: 36px;
+    color: #00D9FF;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.cert-upload-text {
+    color: #9CA3AF;
+    margin: 0;
+    font-size: 14px;
+}
+
+.cert-file-name {
+    margin-top: 8px;
+    color: #9CA3AF;
+    font-size: 13px;
+}
+
+/* ---------- PASSWORD SECTION ---------- */
+.password-section-title {
+    font-size: 20px;
+    color: #F9FAFB;
+    margin-bottom: 24px;
+}
+
+.password-card {
+    margin-top: 32px;
+}
+
+.full-width-button {
+    width: 100%;
+}
+
+.button-margin-top {
+    margin-top: 8px;
+}
+
+/* ---------- EARNINGS CARDS ---------- */
+.earnings-card {
+    text-align: center;
+    padding: 32px;
+}
+
+.earnings-label {
+    color: #9CA3AF;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.earnings-amount {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.earnings-amount-cyan {
+    color: #00D9FF;
+    text-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+}
+
+.earnings-amount-success {
+    color: #10B981;
+    text-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+}
+
+.earnings-amount-warning {
+    color: #F59E0B;
+    text-shadow: 0 0 30px rgba(245, 158, 11, 0.5);
+}
+
+.earnings-subtext {
+    color: #6B7280;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+/* ---------- PAYMENT TABLE ---------- */
+.payment-amount {
+    font-weight: 600;
+}
+
+.processing-text {
+    color: #6B7280;
+    font-size: 13px;
+}
+
+.download-link {
+    text-decoration: none;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #6B7280;
+}
+
+.empty-state-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+/* ---------- BANKING SECTION ---------- */
+.section-spacing {
+    margin-bottom: 40px;
+}
+
+.row-spacing {
+    margin-bottom: 5rem;
+}
+
+.card-spacing {
+    margin-bottom: 5rem;
+}
+
+/* ---------- FILE UPLOADS ---------- */
+.file-icon-pdf {
+    color: #EF4444;
+}
+
+.file-icon-image {
+    color: #3B82F6;
+}
+
+.file-name-display {
+    color: #F9FAFB;
+}
+
+.file-size-display {
+    color: #6B7280;
+    margin-left: 8px;
+}
+
+/* ---------- BLOG MANAGEMENT ---------- */
+.blog-card {
+    height: 100%;
+}
+
+.blog-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 16px;
+}
+
+.blog-card-title {
+    font-size: 18px;
+    color: #F9FAFB;
+    margin: 0;
+}
+
+.blog-card-excerpt {
+    color: #9CA3AF;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.blog-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #374151;
+    padding-top: 16px;
+}
+
+.blog-card-meta {
+    color: #6B7280;
+    font-size: 13px;
+}
+
+.blog-card-meta-item {
+    margin-left: 16px;
+}
+
+.blog-card-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.blog-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.blog-action-edit {
+    color: #00D9FF;
+}
+
+.blog-action-delete {
+    color: #EF4444;
+}
+
+.blog-action-btn:hover {
+    opacity: 0.8;
+}
+
+.blog-tabs {
+    border-bottom: 2px solid #374151;
+    margin-bottom: 32px;
+}
+
+.blog-tab-link {
+    color: #9CA3AF;
+    border: none;
+    padding: 12px 24px;
+    background: transparent;
+}
+
+.blog-tab-link.active,
+.blog-tab-link:hover {
+    color: #00D9FF;
+}
+
+.blog-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.blog-empty-icon {
+    font-size: 64px;
+    color: #6B7280;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.blog-empty-text {
+    color: #9CA3AF;
+    font-size: 16px;
+}
+
+/* ---------- MODAL STYLES ---------- */
+.modal-dark {
+    background: #242B3D;
+    border: 1px solid #374151;
+}
+
+.modal-header-dark {
+    border-bottom: 1px solid #374151;
+}
+
+.modal-title-dark {
+    color: #F9FAFB;
+}
+
+.modal-close-light {
+    filter: invert(1);
+}
+
+.modal-footer-dark {
+    border-top: 1px solid #374151;
+}
+
+.modal-button-spacing {
+    display: flex;
+    gap: 12px;
+}
+
+/* ---------- CREATE BLOG BUTTON ---------- */
+.create-blog-section {
+    margin-bottom: 32px;
+}
+
+/* ---------- MY WORK PAGE ---------- */
+.work-card {
+    height: 100%;
+}
+
+.work-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 16px;
+}
+
+.work-card-title {
+    font-size: 18px;
+    margin: 0 0 8px 0;
+}
+
+.work-card-title-active {
+    color: #00D9FF;
+}
+
+.work-card-title-completed {
+    color: #F9FAFB;
+}
+
+.work-card-id {
+    color: #6B7280;
+    font-size: 13px;
+}
+
+.work-card-badges {
+    margin-bottom: 16px;
+}
+
+.work-badge-service {
+    background: rgba(0, 217, 255, 0.1);
+    color: #00D9FF;
+    border: 1px solid #00D9FF;
+    font-size: 11px;
+    margin-left: 6px;
+}
+
+.work-badge-complete {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+    border: 1px solid #10B981;
+    font-size: 11px;
+    margin-left: 6px;
+}
+
+.work-badge-guide {
+    background: rgba(245, 158, 11, 0.1);
+    color: #F59E0B;
+    border: 1px solid #F59E0B;
+    font-size: 11px;
+    margin-left: 6px;
+}
+
+.work-progress-section {
+    margin-bottom: 16px;
+}
+
+.work-progress-label {
+    color: #9CA3AF;
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.work-progress-bar {
+    background: #1A1F2E;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.work-progress-fill {
+    background: linear-gradient(90deg, #00D9FF, #0099CC);
+    height: 100%;
+}
+
+.work-progress-text {
+    color: #00D9FF;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.work-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #374151;
+    padding-top: 16px;
+}
+
+.work-card-date {
+    color: #6B7280;
+    font-size: 13px;
+}
+
+.work-card-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.work-view-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.work-rating-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.work-rating-stars {
+    display: flex;
+}
+
+.work-star-filled {
+    color: #F59E0B;
+    font-size: 14px;
+}
+
+.work-star-empty {
+    color: #6B7280;
+    font-size: 14px;
+}
+
+.work-rating-text {
+    color: #9CA3AF;
+    font-size: 13px;
+}
+
+.work-earnings {
+    color: #10B981;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.work-rejection-box {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+}
+
+.work-rejection-title {
+    color: #EF4444;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.work-rejection-text {
+    color: #9CA3AF;
+    font-size: 13px;
+}
+
+/* ---------- RESPONSIVE UTILITIES ---------- */
+@media (max-width: 768px) {
+    .profile-photo {
+        width: 100px;
+        height: 100px;
+        font-size: 40px;
+    }
+    
+    .earnings-amount {
+        font-size: 36px;
+    }
+    
+    .earnings-card {
+        padding: 24px;
+        margin-bottom: 16px;
+    }
+    
+    .password-section-title {
+        font-size: 18px;
+    }
+    
+    .blog-card-footer {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    
+    .blog-card-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}

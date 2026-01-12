@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker CEH Details Form - Cyber Bridge</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hacker.css' %}">
+</head>
+
+<body>
+
+<main class="container">
+    <div class="row justify-content-center align-items-center min-vh-100 py-5">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card-dark">
+                <h2 class="text-center page-title" style="font-size: 32px; margin-bottom: 32px;">
+                    Submit CEH Certification Details
+                </h2>
+
+                <!-- Correct Django form -->
+                <form id="hackerCehForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">Full Name *</label>
+                        <input type="text" id="fullName" name="full_name" class="form-input" placeholder="Enter your full name" required>
+                    </div>
+
+                    <!-- Contact Number -->
+                    <div class="form-group">
+                        <label for="contactNumber" class="form-label">Contact Number *</label>
+                        <input type="text" id="contactNumber" name="contact_number" class="form-input"
+                               placeholder="Enter 10-15 digit number" pattern="[0-9]{10,15}" required>
+                        <small class="form-hint">Enter a valid phone number (10-15 digits)</small>
+                    </div>
+
+                    <!-- Skills / Specialization -->
+                    <div class="form-group">
+                        <label for="skills" class="form-label">Skills *</label>
+                        <input type="text" id="skills" name="specialization" class="form-input"
+                               placeholder="e.g. Phishing, Malware, Forensics" required>
+                        <small class="form-hint">Enter your skills separated by commas</small>
+                    </div>
+
+                    <!-- CEH Certification Number -->
+                    <div class="form-group">
+                        <label for="cehCertificationNumber" class="form-label">
+                            CEH Certification Number (EC-Council) *
+                        </label>
+                        <input type="text" id="cehCertificationNumber" name="certificate_number"
+                               class="form-input" placeholder="Enter EC-Council certification number" required>
+                    </div>
+
+                    <!-- Certificate Upload -->
+                    <div class="form-group">
+                        <label class="form-label">Upload CEH Certificate Photo *</label>
+                        <div class="cert-upload-zone" id="certUploadZone">
+                            <i class="bi bi-file-earmark-image cert-upload-icon"></i>
+                            <p class="cert-upload-text">Click to upload certificate photo</p>
+                            <p class="form-hint" style="margin: 0;">Accepted formats: JPG, PNG, PDF (Max 5MB)</p>
+
+                            <input type="file" id="cehCertificatePhoto" name="photo"
+                                   class="profile-photo-input" accept="image/*,.pdf" required>
+                        </div>
+
+                        <div id="certFileName" class="cert-file-name"></div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="text-center">
+                        <button type="submit" class="button-primary full-width-button">
+                            <i class="bi bi-check-circle me-2"></i>Submit Details
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Click upload box triggers file input
+    document.getElementById('certUploadZone').addEventListener('click', function () {
+        document.getElementById('cehCertificatePhoto').click();
+    });
+
+    // Show file name
+    document.getElementById('cehCertificatePhoto').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+
+            // Size check (5 MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert("File size must be less than 5MB");
+                this.value = "";
+                return;
+            }
+
+            document.getElementById('certFileName').innerHTML = `
+                <i class="bi bi-file-earmark-${file.type.includes('pdf') ? 'pdf' : 'image'}"></i>
+                <span class="file-name-display">${file.name}</span>
+                <span class="file-size-display">(${(file.size / 1024).toFixed(1)} KB)</span>
+            `;
+        }
+    });
+</script>
+
+</body>
+</html>

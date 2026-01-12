@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container text-white" style="margin-top:120px; margin-bottom:80px; max-width:600px;">
+    <div class="card-dark p-4 shadow-lg">
+        <h2 class="text-center mb-4" style="color:#00D9FF;">Create Your Account</h2>
+        {% if messages %}
+        <div class="mb-3">
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <!-- END MESSAGE AREA -->
+        
+        <form method="POST" id="signupForm">
+            {% csrf_token %}
+            <!-- Username -->
+            <div class="mb-3 position-relative">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" id="username" class="form-input" placeholder="Choose a username" required>
+                <span id="username-status" class="position-absolute" style="right:15px; top:40px; font-size:20px;"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-input" placeholder="Enter your email" required>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-input" placeholder="Minimum 8 characters" minlength="8" required>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-4">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" name="confirm_password" class="form-input" placeholder="Re-enter password" required>
+            </div>
+
+            <!-- Role Selection -->
+            <label class="form-label fw-bold mt-3 mb-3">Select Your Role</label>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <input type="radio" id="business" name="role" value="business" class="d-none" required>
+                    <label for="business" class="role-card d-block p-4 text-center">
+                        <i class="bi bi-building" style="font-size:56px; color:#00D9FF;"></i>
+                        <h5 class="text-white mt-3 mb-2">Business User</h5>
+                        <p class="text-gray" style="font-size:13px;">Submit complaints and track security issues</p>
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <input type="radio" id="hacker" name="role" value="hacker" class="d-none" required>
+                    <label for="hacker" class="role-card d-block p-4 text-center">
+                        <i class="bi bi-shield-shaded" style="font-size:56px; color:#00D9FF;"></i>
+                        <h5 class="text-white mt-3 mb-2">Ethical Hacker</h5>
+                        <p class="text-gray" style="font-size:13px;">Apply for work and provide security solutions</p>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Terms -->
+            <div class="form-check mt-4 mb-4">
+                <input class="form-check-input" type="checkbox" id="terms" required>
+                <label class="form-check-label text-gray" for="terms">
+                    I agree to the <a href="{% url 'pnp' %}" style="color:#00D9FF;">Terms & Privacy Policy</a>
+                </label>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" id="submitBtn" class="button-primary w-100 mb-3" disabled>Create Account</button>
+
+            <p class="text-center text-gray mt-3">
+                Already have an account? <a href="{% url 'login' %}" style="color:#00D9FF;">Login</a>
+            </p>
+        </form>
+    </div>
+</section>
+
+<script>
+$(document).ready(function() {
+    const usernameInput = $('#username');
+    const statusIcon = $('#username-status');
+    const submitBtn = $('#submitBtn');
+
+    usernameInput.on('keyup', function() {
+        let username = $(this).val().trim();
+        if (username.length < 3) {
+            statusIcon.html('');
+            submitBtn.prop('disabled', true);
+            return;
+        }
+
+        $.ajax({
+            url: "{% url 'check_username' %}",
+            data: {'username': username},
+            success: function(response) {
+                if (response.exists) {
+                    statusIcon.html('<span style="color:#FF4B4B;">✗</span>');
+                    submitBtn.prop('disabled', true);
+                } else {
+                    statusIcon.html('<span style="color:#00FF85;">✔</span>');
+                    submitBtn.prop('disabled', false);
+                }
+            }
+        });
+    });
+
+    // Role card selection styling
+    $('input[name="role"]').on('change', function() {
+        $('.role-card').removeClass('selected');
+        $(this).next('.role-card').addClass('selected');
+    });
+});
+</script>
+<script>
+  var alertList = document.querySelectorAll('.alert');
+  alertList.forEach(function (alertEl) {
+      var bsAlert = new bootstrap.Alert(alertEl);
+      setTimeout(function () {
+          bsAlert.close();
+      }, 3000); // 3 seconds
+  });
+</script>
+{% endblock %}

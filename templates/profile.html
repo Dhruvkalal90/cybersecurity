@@ -1,0 +1,267 @@
+{% extends "base_user.html" %}
+{% block title %}Profile{% endblock title %}
+{% block content %}
+
+{% if request.user.role and request.user.role.name == "HACKER" %}
+
+    <main class="container my-5 profile-container">
+        
+        <!-- Back link -->
+        <a href="hacker-dashboard.html" class="text-cyan back-link">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+        
+        <!-- Page title -->
+        <h1 class="page-title">Hacker Profile</h1>
+        <p class="page-subtitle">Manage your professional profile and credentials.</p>
+        
+        <!-- Profile Form Card -->
+        <div class="card-dark">
+            <form id="profileForm">
+                
+                <!-- Profile Photo Upload -->
+                <div class="profile-photo-wrapper">
+                    <div class="profile-photo" id="profilePhoto">
+                        CB
+                        <input type="file" id="photoInput" accept="image/*" class="profile-photo-input">
+                    </div>
+                    <label for="photoInput" class="text-cyan profile-photo-label" onclick="document.getElementById('photoInput').click()">
+                        <i class="bi bi-camera"></i> Change Photo
+                    </label>
+                </div>
+                
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" class="form-input" placeholder="{{profile.full_name}}" required>
+                </div>
+                
+                <!-- Email (Read-only) -->
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input form-input-readonly" placeholder="{{user.email}}" readonly>
+                    <small class="form-info-text">
+                        <i class="bi bi-info-circle"></i> Email cannot be changed
+                    </small>
+                </div>
+                
+                <!-- Contact Number -->
+                <div class="form-group">
+                    <label class="form-label">Contact Number *</label>
+                    <input type="tel" class="form-input" placeholder="+91 {{profile.contact_number}}" pattern="[0-9+\s-]+" required>
+                </div>
+                
+                <!-- Skills (comma-separated) -->
+                <div class="form-group">
+                    <label class="form-label">Skills (comma-separated) *</label>
+                    <textarea class="form-input" rows="2" placeholder="{{profile.specialization}}" required></textarea>
+                    <small class="form-hint">
+                        Enter your technical skills separated by commas
+                    </small>
+                </div>
+                
+                <!-- Certification Number -->
+                <div class="form-group">
+                    <label class="form-label">Certification Number</label>
+                    <input type="text" class="form-input" placeholder="{{profile.certificate_number}}">
+                </div>
+                
+                <!-- Experience (in years) -->
+                <div class="form-group">
+                    <label class="form-label">Experience (in years) *</label>
+                    <input type="number" class="form-input" placeholder="5" min="0" required>
+                </div>
+                
+                <!-- Bio -->
+                <div class="form-group">
+                    <label class="form-label">Professional Bio</label>
+                    <textarea class="form-input" rows="4" placeholder="Tell us about your experience and expertise"></textarea>
+                </div>
+                
+                <!-- Upload Certification Proof -->
+                <div class="form-group">
+                    <label class="form-label">Certification Proof (PDF)</label>
+                    <div class="cert-upload-zone" id="certUploadZone">
+                        <i class="bi bi-file-earmark-pdf cert-upload-icon"></i>
+                        <p class="cert-upload-text">Click to upload certification document</p>
+                        <input type="file" id="certInput" accept=".pdf" class="profile-photo-input">
+                    </div>
+                    <div id="certFileName" class="cert-file-name"></div>
+                </div>
+            
+                <!-- Save Profile Button -->
+                <button type="submit" class="button-primary full-width-button button-margin-top">
+                    <i class="bi bi-check-circle me-2"></i>Save Changes
+                </button>
+                
+            </form>
+        </div>
+        
+        <!-- Change Password Section -->
+        <div class="card-dark password-card">
+            <h3 class="password-section-title">
+                <i class="bi bi-lock me-2"></i>Change Password
+            </h3>
+            
+            <form id="passwordForm">
+                
+                <!-- Old Password -->
+                <div class="form-group">
+                    <label class="form-label">Current Password *</label>
+                    <input type="password" class="form-input" placeholder="Enter current password" required>
+                </div>
+                
+                <!-- New Password -->
+                <div class="form-group">
+                    <label class="form-label">New Password *</label>
+                    <input type="password" class="form-input" placeholder="Enter new password (min 8 characters)" minlength="8" required>
+                </div>
+                
+                <!-- Confirm New Password -->
+                <div class="form-group">
+                    <label class="form-label">Confirm New Password *</label>
+                    <input type="password" class="form-input" placeholder="Re-enter new password" minlength="8" required>
+                </div>
+                
+                <!-- Change Password Button -->
+                <button type="submit" class="button-primary full-width-button">
+                    <i class="bi bi-shield-check me-2"></i>Update Password
+                </button>
+                
+            </form>
+        </div>
+        
+    </main>
+    {% elif request.user.role and request.user.role.name == "BUSINESS" %}
+    <main class="container my-5" style="max-width: 900px;">
+        
+        <!-- Back link -->
+        <a href="business-dashboard.html" class="text-cyan" style="text-decoration: none; display: inline-block; margin-bottom: 24px;">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+        
+        <!-- Page title -->
+        <h1 class="page-title">Business Profile</h1>
+        <p style="color: #9CA3AF; margin-bottom: 40px;">Manage your business information and account settings.</p>
+        
+        <!-- ===== Profile Form Card ===== -->
+        <div class="card-dark p-4 mb-4">
+            <form id="profileForm">
+                
+                <!-- Profile Photo Upload -->
+                <div class="form-group" style="text-align: center; margin-bottom: 32px;">
+                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #00D9FF, #0099CC); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 48px; color: #0F1419; font-weight: 700; cursor: pointer; position: relative;" id="profilePhoto">
+                        BC
+                        <input type="file" id="photoInput" accept="image/*" style="display: none;">
+                    </div>
+                    <label for="photoInput" class="text-cyan" style="cursor: pointer; font-size: 14px;">
+                        <i class="bi bi-camera"></i> Change Photo
+                    </label>
+                </div>
+                
+                <!-- Company Name -->
+                <div class="form-group">
+                    <label class="form-label">Company Name *</label>
+                    <input type="text" class="form-input" value="{{profile.company_name}}" required>
+                </div>
+                
+                <!-- Contact Number -->
+                <div class="form-group">
+                    <label class="form-label">Contact Number *</label>
+                    <input type="tel" class="form-input" value="+91 {{profile.contact_number}}" pattern="[0-9+\s-]+" required>
+                </div>
+                
+                <!-- Email (Read-only) -->
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" value="{{user.email}}" readonly style="background: #1A1F2E; color: #6B7280; cursor: not-allowed;">
+                    <small style="color: #6B7280; font-size: 12px; display: block; margin-top: 4px;">
+                        <i class="bi bi-info-circle"></i> Email cannot be changed
+                    </small>
+                </div>
+                
+                <!-- Address -->
+                <div class="form-group">
+                    <label class="form-label">Business Address</label>
+                    <textarea class="form-input" rows="3" placeholder="Enter complete business address">{{profile.address}} </textarea>
+                </div>
+                
+                <!-- Business Description -->
+                <div class="form-group">
+                    <label class="form-label">Business Description</label>
+                    <textarea class="form-input" rows="4" placeholder="Brief description of your business">We are a technology company specializing in software development and IT solutions.</textarea>
+                </div>
+                
+                <!-- Verification Status -->
+                <div class="form-group">
+                    <label class="form-label">Verification Status</label>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="badge badge-active" style="font-size: 14px;">
+                            <i class="bi bi-check-circle-fill me-1"></i>Verified
+                        </span>
+                        <span style="color: #9CA3AF; font-size: 13px;">Your business is verified</span>
+                    </div>
+                </div>
+                
+                <!-- Save Profile Button -->
+                <button type="submit" class="button-primary" style="width: 100%; margin-top: 8px;">
+                    <i class="bi bi-check-circle me-2"></i>Save Changes
+                </button>
+                
+            </form>
+        </div>
+        
+        <!-- ===== Change Password Section ===== -->
+        <div class="card-dark p-4 mb-4">
+            <h3 style="font-size: 20px; color: #F9FAFB; margin-bottom: 24px;">
+                <i class="bi bi-lock me-2"></i>Change Password
+            </h3>
+            
+            <form id="passwordForm">
+                
+                <!-- Old Password -->
+                <div class="form-group">
+                    <label class="form-label">Current Password *</label>
+                    <input type="password" class="form-input" placeholder="Enter current password" required>
+                </div>
+                
+                <!-- New Password -->
+                <div class="form-group">
+                    <label class="form-label">New Password *</label>
+                    <input type="password" class="form-input" placeholder="Enter new password (min 8 characters)" minlength="8" required>
+                    <small style="color: #6B7280; font-size: 12px; display: block; margin-top: 4px;">
+                        Password must be at least 8 characters long
+                    </small>
+                </div>
+                
+                <!-- Confirm New Password -->
+                <div class="form-group">
+                    <label class="form-label">Confirm New Password *</label>
+                    <input type="password" class="form-input" placeholder="Re-enter new password" minlength="8" required>
+                </div>
+                
+                <!-- Change Password Button -->
+                <button type="submit" class="button-primary" style="width: 100%;">
+                    <i class="bi bi-shield-check me-2"></i>Update Password
+                </button>
+                
+            </form>
+        </div>
+        
+        <!-- ===== Account Actions ===== -->
+        <div class="card-dark p-4">
+            <h3 style="font-size: 20px; color: #F9FAFB; margin-bottom: 16px;">
+                <i class="bi bi-gear me-2"></i>Account Actions
+            </h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button class="button-secondary" style="justify-content: flex-start; text-align: left; color: #EF4444; border-color: #EF4444;">
+                    <i class="bi bi-trash me-2"></i>Delete Account
+                </button>
+            </div>
+        </div>
+        
+    </main>
+    {% endif %}
+
+{% endblock content %}

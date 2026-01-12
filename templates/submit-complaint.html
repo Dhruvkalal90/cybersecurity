@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Complaint - Cyber Bridge</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3 fixed-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'dashboard' %}">
+            <img src="{% static 'images/logo.png' %}" alt="Cyber Bridge Logo" style="height:50px; margin-right:10px;">
+            <span style="color:#00D9FF; font-weight:700;">Cyber Bridge</span>
+        </a>
+    </div>
+</nav>
+
+<!-- ===== MAIN CONTAINER ===== -->
+<main class="container my-5" style="max-width: 800px; margin-top: 120px !important;">
+    
+    <a href="{% url 'dashboard' %}" class="text-cyan" style="text-decoration: none; margin-bottom: 24px; display: inline-block;">
+        <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <h1 class="page-title">Submit Security Complaint</h1>
+    <p class="text-gray mb-4">Describe your cybersecurity issue and we'll connect you with expert hackers.</p>
+
+    <div class="card-dark p-4">
+        
+        <form id="complaintForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Title field -->
+            <div class="form-group mb-3">
+                <label class="form-label">Complaint Title *</label>
+                <input type="text" name="title" class="form-input" placeholder="Brief description of the issue" maxlength="255" required>
+            </div>
+
+            <!-- Category -->
+            <div class="form-group mb-3">
+                <label class="form-label">Category *</label>
+                <select name="category" class="form-input" required>
+                    <option value="">Select category</option>
+                    <option value="phishing">Phishing</option>
+                    <option value="data-breach">Data Breach</option>
+                    <option value="malware">Malware</option>
+                    <option value="ransomware">Ransomware</option>
+                    <option value="unauthorized">Unauthorized Access</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group mb-3">
+                <label class="form-label">Detailed Description *</label>
+                <textarea name="description" class="form-input" rows="5" required></textarea>
+            </div>
+
+            <!-- File upload -->
+            <div class="form-group mb-4">
+                <label class="form-label">Attach Files (optional)</label>
+                
+                <div class="file-drop-zone" id="dropZone">
+                    <i class="bi bi-cloud-upload file-upload-icon"></i>
+                    <p class="file-upload-text">Drag and drop files or click to browse</p>
+                    <p class="file-upload-info">Supported: .jpg, .png, .pdf, .txt, .log (Max 10MB)</p>
+
+                    <input type="file" id="fileInput" name="files" multiple 
+                           accept=".jpg,.jpeg,.png,.pdf,.txt,.log" style="display:none;">
+                </div>
+
+                <div id="fileList" class="file-list"></div>
+            </div>
+
+            <!-- Service Type -->
+            <div class="form-group mb-4">
+                <label class="form-label">Service Type *</label>
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+                        <input type="radio" name="serviceType" id="report" value="REPORT" class="d-none" required>
+                        <label for="report" class="service-card">
+                            <div class="service-card-header">Report Only</div>
+                            <div class="service-card-price">₹15,000</div>
+                            <div class="service-card-desc">Incident analysis + report</div>
+                        </label>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <input type="radio" name="serviceType" id="guide" value="GUIDE" class="d-none">
+                        <label for="guide" class="service-card">
+                            <div class="service-card-header">Report + Guide</div>
+                            <div class="service-card-price">₹25,000</div>
+                            <div class="service-card-desc">Report + step-by-step guide</div>
+                        </label>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <input type="radio" name="serviceType" id="complete" value="COMPLETE" class="d-none">
+                        <label for="complete" class="service-card service-card-recommended">
+                            <div class="service-card-header">Complete Solution</div>
+                            <div class="service-card-price">₹45,000</div>
+                            <div class="service-card-desc">Full resolution support</div>
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Date of Occurrence -->
+            <div class="form-group mb-3">
+                <label class="form-label">Date of Occurrence *</label>
+                <input type="date" name="date_of_occurrence" class="form-input" required>
+            </div>
+
+            <!-- Additional Notes -->
+            <div class="form-group mb-4">
+                <label class="form-label">Additional Notes (optional)</label>
+                <textarea name="additional_notes" class="form-input" rows="3"></textarea>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="button-primary w-100 py-3">
+                <i class="bi bi-send-fill me-2"></i>Submit Complaint
+            </button>
+
+        </form>
+
+    </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+    // ---------- FILE UPLOAD ----------
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', handleFiles);
+
+    dropZone.addEventListener('dragover', e => {
+        e.preventDefault();
+        dropZone.classList.add("highlight");
+    });
+
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove("highlight"));
+
+    dropZone.addEventListener('drop', e => {
+        e.preventDefault();
+        fileInput.files = e.dataTransfer.files;
+        handleFiles();
+    });
+
+    function handleFiles() {
+        fileList.innerHTML = "";
+        for (let file of fileInput.files) {
+            const item = document.createElement("div");
+            item.className = "file-item";
+            item.innerHTML = `
+                <span><i class="bi bi-file-earmark me-2"></i>${file.name}</span>
+                <span>${(file.size / 1024).toFixed(1)} KB</span>
+            `;
+            fileList.appendChild(item);
+        }
+    }
+
+    // ---------- SERVICE CARD HIGHLIGHT ----------
+    $('input[name="serviceType"]').on('change', function () {
+        $('.service-card').removeClass('service-card-selected');
+        $(this).next('.service-card').addClass('service-card-selected');
+    });
+</script>
+
+</body>
+</html>
