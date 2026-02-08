@@ -4,19 +4,41 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .decorators import role_required
-from .models import User, Business_Profile, Hacker_Profile, Role, Awareness_Sessions,Blogs,Complaints,ComplaintFiles,Applications,Payments
+from .models import User, Business_Profile, Hacker_Profile, Role, Awareness_Sessions,Blogs,Complaints,ComplaintFiles,Applications,Payments,ComplaintCompletion,contact_us_form
 from django.utils import timezone
 from django.db.models import F,Q
 from django.db import transaction
 import razorpay
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from .models import TempComplaintFile
+from django.core.paginator import Paginator
+
+
+SERVICE_PRICES = {
+    "REPORT": 15000,
+    "GUIDE": 25000,
+    "COMPLETE": 45000,
+}
 
 
 # ===============================
 # HOME & STATIC PAGES
 # ===============================
 def index(request):
+    if request.method=="POST":
+        name=request.POST.get('name')
+        email=request.POST.get('email')
+        subject=request.POST.get('subject')
+        message=request.POST.get('message')
+        contact_us_form.objects.create(
+            name=name,
+            email=email,
+            subject=subject,
+            message=message
+        )
+        messages.success(request,"contact Form submitted successfully")
+        return redirect('index')
     if request.user.is_authenticated:
         return redirect("dashboard")  # use URL name
     return render(request, "index.html")
@@ -173,16 +195,53 @@ def dashboard(request):
     if user.role.name.lower() == "hacker":
         hacker = Hacker_Profile.objects.get(user=user)
 
-        # Complaints hacker did NOT apply to yet
-        applied_ids = Applications.objects.filter(hacker=hacker).values_list("complaint_id", flat=True)
+        # -------------------------------
+        # ACTIVE WORK (Assigned & Ongoing)
+        # -------------------------------
+        active_work = Complaints.objects.filter(
+            assigned_hacker=hacker,
+            status="In Progress"
+        ).order_by("-date_submitted")
 
-        latest_complaints = Complaints.objects.exclude(
+        active_count = active_work.count()
+
+        # -------------------------------
+        # COMPLETED WORK
+        # -------------------------------
+        completed_work = Complaints.objects.filter(
+            assigned_hacker=hacker,
+            status="Completed"
+        ).order_by("-date_submitted")
+
+        completed_count = completed_work.count()
+
+        # -------------------------------
+        # OPPORTUNITIES (Not Applied Yet)
+        # -------------------------------
+        applied_ids = Applications.objects.filter(
+            hacker=hacker
+        ).values_list("complaint_id", flat=True)
+
+        opportunities = Complaints.objects.filter(
+            assigned_hacker__isnull=True
+        ).exclude(
             id__in=applied_ids
         ).order_by("-date_submitted")[:3]
 
+        blogs= Blogs.objects.filter(
+            author=user
+        )
+        blog_count=blogs.count()
+
         return render(request, "dashboard.html", {
-            "opportunities": latest_complaints
+            "opportunities": opportunities,
+            "active_work": active_work,
+            "completed_work": completed_work,
+            "active_count": active_count,
+            "completed_count": completed_count,
+            "blog_count":blog_count,
         })
+
     elif user.role.name.lower() == "business":
         business = Business_Profile.objects.get(user=user)
 
@@ -366,7 +425,7 @@ def pay_awareness_session(request):
         "phone": booking["phone"],
     }
     print(context)
-    return render(request, "razorpay_checkout.html", context)
+    return render(request, "razorpay_awareness_checkout.html", context)
 
 
 @csrf_exempt
@@ -376,49 +435,74 @@ def payment_success(request):
 
     payment_id = request.POST.get("razorpay_payment_id")
     order_id = request.POST.get("razorpay_order_id")
+    signature = request.POST.get("razorpay_signature")
 
     booking = request.session.get("pending_awareness_booking")
     saved_order = request.session.get("razorpay_order_id")
-    print(payment_id,order_id,booking,saved_order)
+
     if not booking or order_id != saved_order:
         messages.error(request, "Invalid or expired payment.")
         return redirect("dashboard")
 
-    business = Business_Profile.objects.get(user=request.user)
-
-    # ---- CREATE SESSION (ONLY NOW) ----
-    session = Awareness_Sessions.objects.create(
-        business=business,
-        company_name=booking["company_name"],
-        contact_person=booking["contact_person"],
-        phone=booking["phone"],
-        email=booking["email"],
-        session_mode=booking["session_mode"].upper(),
-        package=booking["package"].upper(),
-        preferred_date=booking["preferred_date"],
-        location=booking["location"] or "Online",
-        participants=booking["participants"],
-        package_price=booking["package_price"],
-        extra_price=booking["extra_price"],
-        total_price=booking["total_price"],
-        payment_status="PAID",
-        status="APPROVED",
+    client = razorpay.Client(
+        auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
     )
 
-    Payments.objects.create(
-        payer=business.user,
-        amount=session.total_price,
-        payment_method="RAZORPAY",
-        transaction_id=payment_id,
-        status="Paid"
-    )
+    try:
+        client.utility.verify_payment_signature({
+            "razorpay_order_id": order_id,
+            "razorpay_payment_id": payment_id,
+            "razorpay_signature": signature,
+        })
+    except razorpay.errors.SignatureVerificationError:
+        messages.error(request, "Payment verification failed.")
+        return redirect("dashboard")
+
+    # ---- PREVENT DUPLICATE PAYMENT ----
+    if Payments.objects.filter(transaction_id=payment_id).exists():
+        return redirect("dashboard")
+
+    user = request.user
+    business = Business_Profile.objects.get(user=user)
+
+    with transaction.atomic():
+
+        # ✅ 1. CREATE PAYMENT FIRST
+        payment = Payments.objects.create(
+            payer=user,
+            amount=booking["total_price"],
+            payment_method="RAZORPAY",
+            transaction_id=payment_id,
+            status="Paid"
+        )
+
+        # ✅ 2. CREATE AWARENESS SESSION & LINK PAYMENT
+        session = Awareness_Sessions.objects.create(
+            business=business,
+            payment=payment,  # 🔗 LINKED HERE
+            company_name=booking["company_name"],
+            contact_person=booking["contact_person"],
+            phone=booking["phone"],
+            email=booking["email"],
+            session_mode=booking["session_mode"].upper(),
+            package=booking["package"].upper(),
+            preferred_date=booking["preferred_date"],
+            location=booking["location"] or "Online",
+            participants=booking["participants"],
+            package_price=booking["package_price"],
+            extra_price=booking["extra_price"],
+            total_price=booking["total_price"],
+            payment_status="PAID",
+            status="APPROVED",
+        )
 
     # ---- CLEAN SESSION ----
-    del request.session["pending_awareness_booking"]
-    del request.session["razorpay_order_id"]
+    request.session.pop("pending_awareness_booking", None)
+    request.session.pop("razorpay_order_id", None)
 
     messages.success(request, "Payment successful! Session booked.")
     return redirect("dashboard")
+
 
 
 
@@ -554,40 +638,158 @@ def awareness_session_list(request):
         "empty_rows": empty_rows,
     })
 
-@role_required("business","dashboard")
+@role_required("business", "dashboard")
+@login_required
 def submit_complaint(request):
     if request.method == "POST":
-        title = request.POST.get("title")
-        category = request.POST.get("category")
-        description = request.POST.get("description")
-        service_type = request.POST.get("serviceType")
-        date_of_occurrence = request.POST.get("date_of_occurrence")
-        notes = request.POST.get("additional_notes")
-        files = request.FILES.getlist("files")
+        data = {
+            "title": request.POST.get("title"),
+            "category": request.POST.get("category"),
+            "description": request.POST.get("description"),
+            "service_type": request.POST.get("serviceType"),
+            "date_of_occurrence": request.POST.get("date_of_occurrence"),
+            "additional_notes": request.POST.get("additional_notes"),
+        }
 
-        business = Business_Profile.objects.get(user=request.user)
+        if not data["title"] or not data["service_type"]:
+            messages.error(request, "Required fields missing.")
+            return redirect("submit_complaint")
 
-        complaint = Complaints.objects.create(
-            business=business,
-            title=title,
-            category=category,
-            description=description,
-            service_type=service_type.upper(),
-            date_of_occurrence=date_of_occurrence,
-            additional_notes=notes,
-        )
+        amount = SERVICE_PRICES.get(data["service_type"], 0)
 
-        # save multiple files
-        for f in files:
-            ComplaintFiles.objects.create(
-                complaint=complaint,
+        # ---- TEMP FILE STORAGE ----
+        temp_file_ids = []
+        for f in request.FILES.getlist("files"):
+            temp = TempComplaintFile.objects.create(
+                user=request.user,
                 file=f
             )
+            temp_file_ids.append(temp.id)
 
-        messages.success(request, "Complaint submitted successfully!")
-        return redirect("dashboard")
+        # ---- STORE IN SESSION ----
+        request.session["pending_complaint"] = {
+            **data,
+            "amount": amount
+        }
+        request.session["temp_file_ids"] = temp_file_ids
+
+        # ---- CREATE RAZORPAY ORDER ----
+        client = razorpay.Client(
+            auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
+        )
+
+        order = client.order.create({
+            "amount": amount * 100,
+            "currency": "INR",
+            "payment_capture": 1
+        })
+
+        request.session["complaint_order_id"] = order["id"]
+
+        return redirect("pay_complaint")
 
     return render(request, "submit-complaint.html")
+
+@login_required
+def pay_complaint(request):
+    complaint = request.session.get("pending_complaint")
+    order_id = request.session.get("complaint_order_id")
+
+    if not complaint or not order_id:
+        messages.error(request, "No pending complaint payment.")
+        return redirect("dashboard")
+
+    return render(request, "razorpay_complaint_checkout.html", {
+        "razorpay_key": settings.RAZORPAY_KEY_ID,
+        "order_id": order_id,
+        "amount": complaint["amount"] * 100,
+        "company": request.user.email,
+        "email": request.user.email,
+        "phone": "",
+    })
+@csrf_exempt
+def complaint_payment_success(request):
+    if request.method != "POST":
+        return redirect("dashboard")
+
+    payment_id = request.POST.get("razorpay_payment_id")
+    order_id = request.POST.get("razorpay_order_id")
+    signature = request.POST.get("razorpay_signature")
+
+    pending = request.session.get("pending_complaint")
+    saved_order = request.session.get("complaint_order_id")
+
+    if not pending or order_id != saved_order:
+        messages.error(request, "Invalid or expired payment.")
+        return redirect("dashboard")
+
+    # ---- VERIFY SIGNATURE ----
+    client = razorpay.Client(
+        auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
+    )
+
+    try:
+        client.utility.verify_payment_signature({
+            "razorpay_order_id": order_id,
+            "razorpay_payment_id": payment_id,
+            "razorpay_signature": signature,
+        })
+    except razorpay.errors.SignatureVerificationError:
+        messages.error(request, "Payment verification failed.")
+        return redirect("dashboard")
+
+    # ---- PREVENT DUPLICATE PAYMENT ----
+    if Payments.objects.filter(transaction_id=payment_id).exists():
+        return redirect("dashboard")
+
+    # ---- GET USER SAFELY FROM SESSION ----
+    user_id = request.session.get("_auth_user_id")
+    if not user_id:
+        messages.error(request, "Session expired. Please login again.")
+        return redirect("login")
+
+    user = User.objects.get(id=user_id)
+    business = Business_Profile.objects.get(user=user)
+
+    with transaction.atomic():
+
+        # ✅ 1. CREATE PAYMENT FIRST
+        payment = Payments.objects.create(
+            payer=user,
+            amount=pending["amount"],
+            payment_method="RAZORPAY",
+            transaction_id=payment_id,
+            status="Paid"
+        )
+
+        # ✅ 2. CREATE COMPLAINT & LINK PAYMENT
+        complaint = Complaints.objects.create(
+            business=business,
+            payment=payment,  # 🔗 LINKED HERE (OPTION 1)
+            title=pending["title"],
+            category=pending["category"],
+            description=pending["description"],
+            service_type=pending["service_type"],
+            date_of_occurrence=pending["date_of_occurrence"],
+            additional_notes=pending["additional_notes"],
+            status="Pending"
+        )
+
+        # ✅ 3. MOVE TEMP FILES TO COMPLAINT
+        for file_id in request.session.get("temp_file_ids", []):
+            temp = TempComplaintFile.objects.get(id=file_id)
+            ComplaintFiles.objects.create(
+                complaint=complaint,
+                file=temp.file
+            )
+            temp.delete()
+
+    # ---- CLEAN SESSION ----
+    for key in ["pending_complaint", "complaint_order_id", "temp_file_ids"]:
+        request.session.pop(key, None)
+
+    messages.success(request, "Complaint submitted successfully with payment.")
+    return redirect("dashboard")
 
 @role_required("business","dashboard")
 @login_required
@@ -684,3 +886,65 @@ def profile(request):
     else:
         return redirect("dashboard")
     return render(request,"profile.html",{"profile":Profile})
+
+def mywork(request):
+    hacker = Hacker_Profile.objects.get(user=request.user)
+
+    active_complaints = Complaints.objects.filter(
+        assigned_hacker=hacker,
+        status="In Progress"
+    ).order_by("-date_submitted")
+
+    completed_complaints = Complaints.objects.filter(
+        assigned_hacker=hacker,
+        status="Completed"
+    ).order_by("-date_submitted")
+
+    return render(request, "hacker-my-work.html", {
+        "active_complaints": active_complaints,
+        "completed_complaints": completed_complaints,
+    })
+
+# views.py
+@role_required("hacker", "dashboard")
+@login_required
+def complete_complaint(request, complaint_id):
+    hacker = get_object_or_404(Hacker_Profile, user=request.user)
+    complaint = get_object_or_404(
+        Complaints,
+        id=complaint_id,
+        assigned_hacker=hacker,
+        status="In Progress"
+    )
+
+    if request.method == "POST":
+        report_file = request.FILES.get("completion_file")
+        remarks = request.POST.get("remarks")
+
+        if not report_file:
+            messages.error(request, "Completion report is required.")
+            return redirect("mywork")
+
+        with transaction.atomic():
+            # Save completion report
+            ComplaintCompletion.objects.create(
+                complaint=complaint,
+                hacker=hacker,
+                report_file=report_file,
+                remarks=remarks
+            )
+
+            # Update complaint status
+            complaint.status = "Completed"
+            complaint.save()
+
+        messages.success(request, "Work marked as completed successfully.")
+        return redirect("mywork")
+
+    return redirect("mywork")
+
+@role_required("hacker", "dashboard")
+@login_required
+def my_earnings(request):
+    return render(request,"hacker-earnings-banking.html")
+

@@ -132,6 +132,21 @@ class Admin_Profile(models.Model):
         return f"{self.user.email} ({self.get_position_display()})"
 
 
+# =========================
+# 8. PAYMENTS
+# =========================
+
+class Payments(models.Model):
+    payer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payer',blank=True,null=True)
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver',blank=True,null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_method = models.CharField(max_length=50)
+    transaction_id = models.CharField(max_length=100, unique=True)
+    status = models.CharField(max_length=50, default="Pending")
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.transaction_id} - {self.status}"
 
 # =========================
 # 5. COMPLAINTS
@@ -160,9 +175,24 @@ class Complaints(models.Model):
     status = models.CharField(max_length=50, default="Pending",blank=True, null=True)
     assigned_hacker = models.ForeignKey('Hacker_Profile', on_delete=models.SET_NULL, null=True, blank=True)
     priority = models.CharField(max_length=20, default="Medium")
+    payment = models.OneToOneField(
+        Payments,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return f"{self.title} - {self.business.company_name}"
+
+
+class TempComplaintFile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    file = models.FileField(upload_to="temp_complaints/")
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Temp file - {self.user.email}"
 
 class ComplaintFiles(models.Model):
     complaint = models.ForeignKey(Complaints, on_delete=models.CASCADE, related_name="files")
@@ -203,21 +233,25 @@ class Applications(models.Model):
         return f"{self.hacker.user.email} applied for {self.complaint.title}"
 
 
-# =========================
-# 8. PAYMENTS
-# =========================
-
-class Payments(models.Model):
-    payer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payer',blank=True,null=True)
-    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver',blank=True,null=True)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_method = models.CharField(max_length=50)
-    transaction_id = models.CharField(max_length=100, unique=True)
-    status = models.CharField(max_length=50, default="Pending")
-    date = models.DateTimeField(default=timezone.now)
+# models.py
+class ComplaintCompletion(models.Model):
+    complaint = models.OneToOneField(
+        Complaints,
+        on_delete=models.CASCADE,
+        related_name="completion"
+    )
+    hacker = models.ForeignKey(
+        Hacker_Profile,
+        on_delete=models.CASCADE
+    )
+    report_file = models.FileField(upload_to="completion_reports/")
+    remarks = models.TextField(blank=True, null=True)
+    completed_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.transaction_id} - {self.status}"
+        return f"Completion - {self.complaint.title}"
+
+
 
 
 # =========================
@@ -306,6 +340,11 @@ class Awareness_Sessions(models.Model):
     package_price = models.PositiveIntegerField(default=0)
     extra_price = models.PositiveIntegerField(default=0)
     total_price = models.PositiveIntegerField(default=0)
+    payment = models.OneToOneField(
+        Payments,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True)
 
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS, default="UNPAID")
 
@@ -422,3 +461,12 @@ class Notifications(models.Model):
 
     def __str__(self):
         return f"To: {self.recipient.email}"
+
+class contact_us_form(models.Model):
+    name=models.CharField(max_length=20)
+    email=models.CharField(max_length=50)
+    subject=models.CharField(max_length=30)
+    message=models.TextField()
+
+    def __str__(self):
+        return f"{self.email} - {self.message}"

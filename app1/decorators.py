@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from functools import wraps
+from django.contrib import messages
 
 def role_required(required_role,url):
     """
@@ -16,7 +17,7 @@ def role_required(required_role,url):
 
             if user_role == required_role.lower():
                 return view_func(request, *args, **kwargs)
-
+            messages.warning(request,"You have no access")
             return redirect(url)  # unauthorized → redirect to home
 
         return wrapper

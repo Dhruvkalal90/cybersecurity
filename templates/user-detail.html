@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>User Details - Cyber Bridge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+</head>
+
+<body>
+
+<!-- ===== PAGE CONTAINER ===== -->
+<main class="container my-5">
+
+    <!-- Back -->
+    <a href="{% url 'manage_users' %}" class="text-cyan back-link">
+        <i class="bi bi-arrow-left"></i> Back to Users
+    </a>
+
+    <!-- Title -->
+    <h1 class="page-title">User Details</h1>
+    <p class="page-subtitle">Complete profile information</p>
+
+    <!-- ===== USER CARD ===== -->
+    <div class="card-dark p-4">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 style="margin:0;">
+                    <i class="bi bi-person-circle me-2"></i>
+                    {{ view_user.username }}
+                </h3>
+                <span class="text-gray">{{ view_user.email }}</span>
+            </div>
+
+            {% if view_user.role.name == "ADMIN" %}
+                <span class="badge badge-danger">ADMIN</span>
+            {% elif view_user.role.name == "HACKER" %}
+                <span class="badge badge-info">HACKER</span>
+            {% elif view_user.role.name == "BUSINESS" %}
+                <span class="badge badge-warning">BUSINESS</span>
+            {% endif %}
+        </div>
+
+        <hr style="border-color:#1f2937">
+
+        <!-- ===== BASIC DETAILS ===== -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="detail-label">User ID</div>
+                <div class="detail-value">#{{ view_user.id }}</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="detail-label">Account Status</div>
+                <div class="detail-value">
+                    {% if view_user.is_active %}
+                        <span class="badge badge-resolved">Active</span>
+                    {% else %}
+                        <span class="badge badge-danger">Inactive</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="detail-label">Joined On</div>
+                <div class="detail-value">{{ view_user.date_created|date:"d M Y, h:i A" }}</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="detail-label">Last Login</div>
+                <div class="detail-value">
+                    {{ view_user.last_login|default:"Never" }}
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ROLE SPECIFIC DATA ===== -->
+
+        {% if view_user.role.name == "HACKER" and hacker_profile %}
+        <div class="complaint-section">
+            <h4 class="section-heading">
+                <i class="bi bi-shield-check me-2"></i> Hacker Profile
+            </h4>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="detail-label">Full Name</div>
+                    <div class="detail-value">{{ hacker_profile.full_name }}</div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="detail-label">Contact Number</div>
+                    <div class="detail-value">{{ hacker_profile.contact_number }}</div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="detail-label">Specialization</div>
+                    <div class="detail-value">{{ hacker_profile.specialization }}</div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="detail-label">Certificate Number</div>
+                    <div class="detail-value">{{ hacker_profile.certificate_number }}</div>
+                </div>
+
+                {% if hacker_profile.photo %}
+                <div class="col-md-12 mt-3">
+                    <div class="detail-label">Profile Photo</div>
+                    <img src="{{ hacker_profile.photo.url }}" class="rounded mt-2" style="max-width:200px;">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if view_user.role.name == "BUSINESS" and business_profile %}
+        <div class="complaint-section">
+            <h4 class="section-heading">
+                <i class="bi bi-building me-2"></i> Business Profile
+            </h4>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="detail-label">Company Name</div>
+                    <div class="detail-value">{{ business_profile.company_name }}</div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="detail-label">Contact Number</div>
+                    <div class="detail-value">{{ business_profile.contact_number }}</div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="detail-label">Address</div>
+                    <div class="detail-value">{{ business_profile.address }}</div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="detail-label">GSTIN</div>
+                    <div class="detail-value">{{ business_profile.gstin }}</div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="detail-label">Verified</div>
+                    <div class="detail-value">
+                        {% if business_profile.verified %}
+                            <span class="badge badge-resolved">Yes</span>
+                        {% else %}
+                            <span class="badge badge-warning">No</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

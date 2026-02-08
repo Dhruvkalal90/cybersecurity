@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users - Cyber Bridge</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="{% static "css/styles.css" %}">
+    <link rel="stylesheet" href="{% static "css/admin.css" %}">
+
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid" style="padding: 0 24px;">
             <a class="navbar-brand d-flex align-items-center" href="index.html">
-                <img src="logo.png" alt="Cyber Bridge Logo" style="height:50px; margin-right:10px;">
+                <img src="{% static "images/CB.png" %}" alt="Cyber Bridge Logo" style="height:50px; margin-right:10px;">
                 <span style="color:#00D9FF; font-weight:700;">Cyber Bridge</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -23,7 +25,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
+                        <a class="nav-link active" href="admin-dashboard.html">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="admin-manage-user.html">Users</a>
@@ -32,7 +34,7 @@
                         <a class="nav-link" href="admin-complaint.html">Complaints</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="admin-manage-session.html">Sessions</a>
+                        <a class="nav-link" href="admin-manage-session.html">Sessions</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="admin-manage-content.html">Content</a>
@@ -48,9 +50,11 @@
                     </div>
                     <span class="admin-badge">ADMIN</span>
                     <div class="dropdown">
+                        {{user.username.upper}}
                         <button class="btn btn-link text-decoration-none dropdown-toggle" type="button" data-bs-toggle="dropdown" style="color: #F9FAFB;">
                             <i class="bi bi-person-circle" style="font-size: 24px;"></i>
                         </button>
+
                         <ul class="dropdown-menu dropdown-menu-end" style="background: #1a1f29; border: 1px solid #374151;">
                             <li><a class="dropdown-item" href="#" style="color: #F9FAFB;">Profile</a></li>
                             <li><a class="dropdown-item" href="index.html" style="color: #EF4444;">Logout</a></li>
@@ -64,7 +68,7 @@
     <main class="container-fluid my-5 px-4">
         
         <!-- Back link -->
-        <a href="admin-dashboard.html" class="text-cyan" style="text-decoration: none; display: inline-block; margin-bottom: 24px;">
+        <a href="{% url "admin_dashboard" %}" class="text-cyan" style="text-decoration: none; display: inline-block; margin-bottom: 24px;">
             <i class="bi bi-arrow-left"></i> Back to Dashboard
         </a>
         
@@ -72,74 +76,104 @@
         <h1 class="page-title">Manage Users</h1>
         <p style="color: #9CA3AF; margin-bottom: 40px;">View and manage all platform users.</p>
         
-        <!-- Stats Row (3 cards) -->
-        <div class="row mb-5">
-            <div class="col-md-4 mb-3">
-                <div class="card-stat card-stat-cyan">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <div class="card-stat-number card-stat-number-cyan">0</div>
-                            <div class="card-stat-label">Total Users</div>
-                        </div>
-                        <i class="bi bi-people card-stat-icon card-stat-icon-cyan"></i>
-                    </div>
+        <!-- Stats Row (4 cards) -->
+<div class="row mb-5">
+
+    <div class="col-md-3 mb-3">
+        <div class="card-stat card-stat-cyan">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="card-stat-number card-stat-number-cyan">{{ total_users }}</div>
+                    <div class="card-stat-label">Total Users</div>
                 </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <div class="card-stat card-stat-info">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <div class="card-stat-number card-stat-number-info">0</div>
-                            <div class="card-stat-label">Hackers</div>
-                        </div>
-                        <i class="bi bi-shield-check card-stat-icon card-stat-icon-info"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <div class="card-stat card-stat-warning">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <div class="card-stat-number card-stat-number-warning">0</div>
-                            <div class="card-stat-label">Businesses</div>
-                        </div>
-                        <i class="bi bi-building card-stat-icon card-stat-icon-warning"></i>
-                    </div>
-                </div>
+                <i class="bi bi-people card-stat-icon card-stat-icon-cyan"></i>
             </div>
         </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card-stat card-stat-info">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="card-stat-number card-stat-number-info">{{ hacker_count }}</div>
+                    <div class="card-stat-label">Hackers</div>
+                </div>
+                <i class="bi bi-shield-check card-stat-icon card-stat-icon-info"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card-stat card-stat-warning">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="card-stat-number card-stat-number-warning">{{ business_count }}</div>
+                    <div class="card-stat-label">Businesses</div>
+                </div>
+                <i class="bi bi-building card-stat-icon card-stat-icon-warning"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card-stat card-stat-danger">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="card-stat-number card-stat-number-danger">{{ admin_count }}</div>
+                    <div class="card-stat-label">Admins</div>
+                </div>
+                <i class="bi bi-shield-lock-fill card-stat-icon card-stat-icon-danger"></i>
+            </div>
+        </div>
+    </div>
+
+</div>
+
         
-        <!-- Filter Section -->
-        <div class="card-dark p-4 mb-4">
-            <div class="row align-items-end">
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">User Type</label>
-                    <select class="form-input">
-                        <option value="">All Users</option>
-                        <option value="hacker">Hackers</option>
-                        <option value="business">Businesses</option>
-                    </select>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">Status</label>
-                    <select class="form-input">
-                        <option value="">All Status</option>
-                        <option value="verified">Verified</option>
-                        <option value="pending">Pending</option>
-                        <option value="suspended">Suspended</option>
-                    </select>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">Search</label>
-                    <input type="text" class="form-input" placeholder="Search by name or email...">
-                </div>
-                <div class="col-md-2 mb-3">
-                    <button class="button-primary" style="width: 100%;">
-                        <i class="bi bi-search me-1"></i> Search
-                    </button>
-                </div>
-            </div>
+        <form method="get" class="card-dark p-4 mb-4">
+    <div class="row align-items-end">
+
+        <!-- USER TYPE -->
+        <div class="col-md-3 mb-3">
+            <label class="form-label">User Type</label>
+            <select name="user_type" class="form-input">
+                <option value="">All Users</option>
+                <option value="ADMIN" {% if selected_user_type == "ADMIN" %}selected{% endif %}>Admins</option>
+                <option value="HACKER" {% if selected_user_type == "HACKER" %}selected{% endif %}>Hackers</option>
+                <option value="BUSINESS" {% if selected_user_type == "BUSINESS" %}selected{% endif %}>Businesses</option>
+            </select>
         </div>
+
+        <!-- STATUS -->
+        <div class="col-md-3 mb-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-input">
+                <option value="">All Status</option>
+                <option value="active" {% if selected_status == "active" %}selected{% endif %}>Active</option>
+                <option value="inactive" {% if selected_status == "inactive" %}selected{% endif %}>Inactive</option>
+            </select>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Search</label>
+            <input type="text"
+                   name="search"
+                   value="{{ search_query }}"
+                   class="form-input"
+                   placeholder="Search by name or email">
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="col-md-2 mb-3">
+            <button class="button-primary w-100">
+                <i class="bi bi-search me-1"></i> Filter
+            </button>
+        </div>
+
+    </div>
+</form>
+
         
         <!-- Users Table -->
         <div class="card-dark p-4">
@@ -165,97 +199,99 @@
                             <th class="table-header-cell">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Sample Row 1 -->
+                    <tbody id="user-table-body">
+                        <tr id="loading-row">
+                            <td colspan="7" class="table-loading">
+                                <div class="spinner"></div>
+                                <div>Loading users...</div>
+                            </td>
+                        </tr>
+
+                        {% for u in users %}
                         <tr class="table-row">
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"><span class="badge badge-info"></span></td>
-                            <td class="table-cell"><span class="badge badge-active"></span></td>
-                            <td class="table-cell"></td>
+                            <td class="table-cell">#{{ u.id }}</td>
+                            <td class="table-cell">{{ u.username }}</td>
+                            <td class="table-cell">{{ u.email }}</td>
                             <td class="table-cell">
-                                <button class="table-action-btn" title="View"><i class="bi bi-eye"></i></button>
-                                <button class="table-action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
-                                <button class="table-action-btn danger" title="Delete"><i class="bi bi-trash"></i></button>
+                                {% if u.role.name == "ADMIN" %}
+                                    <span class="badge badge-danger">Admin</span>
+                                {% elif u.role.name == "HACKER" %}
+                                    <span class="badge badge-info">Hacker</span>
+                                {% elif u.role.name == "BUSINESS" %}
+                                    <span class="badge badge-warning">Business</span>
+                                {% else %}
+                                    <span class="badge badge-secondary">{{ u.role.name }}</span>
+                                {% endif %}
+
+                            </td>
+                            <td class="table-cell">
+                                <span class="badge badge-resolved">Active</span>
+                            </td>
+                            <td class="table-cell">{{ u.date_created|date:"d M Y" }}</td>
+                            <td class="table-cell">
+                                <a href="{% url 'admin_view_user' u.id %}" class="table-action-btn" title="View">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+                                <form method="post" action="{% url 'admin_delete_user' u.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button class="table-action-btn danger" title="Delete"
+                                        onclick="return confirm('Delete this user?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
-                        
-                        <!-- Sample Row 2 -->
-                         <tr class="table-row">
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"><span class="badge badge-info"></span></td>
-                            <td class="table-cell"><span class="badge badge-active"></span></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell">
-                                <button class="table-action-btn" title="View"><i class="bi bi-eye"></i></button>
-                                <button class="table-action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
-                                <button class="table-action-btn danger" title="Delete"><i class="bi bi-trash"></i></button>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="table-cell text-center text-muted">
+                                No users found
                             </td>
                         </tr>
-                        
-                        <!-- Sample Row 3 -->
-                         <tr class="table-row">
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"><span class="badge badge-info"></span></td>
-                            <td class="table-cell"><span class="badge badge-active"></span></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell">
-                                <button class="table-action-btn" title="View"><i class="bi bi-eye"></i></button>
-                                <button class="table-action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
-                                <button class="table-action-btn danger" title="Delete"><i class="bi bi-trash"></i></button>
-                            </td>
-                        </tr>
-                        
-                        <!-- Sample Row 4 -->
-                         <tr class="table-row">
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"><span class="badge badge-info"></span></td>
-                            <td class="table-cell"><span class="badge badge-active"></span></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell">
-                                <button class="table-action-btn" title="View"><i class="bi bi-eye"></i></button>
-                                <button class="table-action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
-                                <button class="table-action-btn danger" title="Delete"><i class="bi bi-trash"></i></button>
-                            </td>
-                        </tr>
-                        
-                        <!-- Sample Row 5 -->
-                        <tr class="table-row">
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"><span class="badge badge-info"></span></td>
-                            <td class="table-cell"><span class="badge badge-active"></span></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell">
-                                <button class="table-action-btn" title="View"><i class="bi bi-eye"></i></button>
-                                <button class="table-action-btn" title="Edit"><i class="bi bi-pencil"></i></button>
-                                <button class="table-action-btn danger" title="Delete"><i class="bi bi-trash"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
+                        {% endfor %}
+                        </tbody>
+
                 </table>
             </div>
             
             <!-- Pagination -->
             <div style="display: flex; justify-content: center; margin-top: 24px; gap: 8px;">
-                <button class="button-secondary" style="padding: 8px 16px;" disabled>
-                    <i class="bi bi-chevron-left"></i>
-                </button>
-                <button class="button-primary" style="padding: 8px 16px;">1</button>
-                <button class="button-secondary" style="padding: 8px 16px;">2</button>
-                <button class="button-secondary" style="padding: 8px 16px;">3</button>
-                <button class="button-secondary" style="padding: 8px 16px;">
-                    <i class="bi bi-chevron-right"></i>
-                </button>
+
+                <!-- PREVIOUS -->
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="button-secondary" style="padding: 8px 16px;">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                {% else %}
+                    <button class="button-secondary" style="padding: 8px 16px;" disabled>
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                {% endif %}
+
+                <!-- PAGE NUMBERS -->
+                {% for num in page_obj.paginator.page_range %}
+                    {% if num == page_obj.number %}
+                        <button class="button-primary" style="padding: 8px 16px;">{{ num }}</button>
+                    {% else %}
+                        <a href="?page={{ num }}" class="button-secondary" style="padding: 8px 16px;">
+                            {{ num }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- NEXT -->
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="button-secondary" style="padding: 8px 16px;">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                {% else %}
+                    <button class="button-secondary" style="padding: 8px 16px;" disabled>
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                {% endif %}
+
             </div>
+
         </div>
         
     </main>
@@ -300,42 +336,6 @@
         </div>
     </div>
     
-    <!-- Footer -->
-    <footer class="footer-dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <h5 class="text-cyan mb-3">
-                        <i class="bi bi-shield-lock-fill"></i> CyberBridge
-                    </h5>
-                    <p class="text-gray">
-                        Connecting businesses with expert ethical hackers to solve cybersecurity challenges efficiently and securely.
-                    </p>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h5 class="text-white mb-3">Quick Links</h5>
-                    <a href="#" class="footer-link">About Us</a>
-                    <a href="#" class="footer-link">How It Works</a>
-                    <a href="#" class="footer-link">Privacy Policy</a>
-                    <a href="#" class="footer-link">Terms of Service</a>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h5 class="text-white mb-3">Contact</h5>
-                    <p class="text-gray">Email: support@cyberbridge.com</p>
-                    <p class="text-gray">Phone: +91 1234567890</p>
-                    <div class="mt-3">
-                        <i class="bi bi-facebook footer-social-icon"></i>
-                        <i class="bi bi-twitter footer-social-icon"></i>
-                        <i class="bi bi-linkedin footer-social-icon"></i>
-                        <i class="bi bi-instagram footer-social-icon"></i>
-                    </div>
-                </div>
-            </div>
-            <hr style="border-color: #1f2937; margin: 30px 0;">
-            <p class="text-center text-gray mb-0">© 2024 CyberBridge. All rights reserved.</p>
-        </div>
-    </footer>
-    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.getElementById('addUserForm').addEventListener('submit', function(e) {
@@ -344,6 +344,14 @@
             bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
             this.reset();
         });
+
     </script>
+    
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loadingRow = document.getElementById("loading-row");
+            if (loadingRow) loadingRow.style.display = "none";
+        });
+        </script>
 </body>
 </html>

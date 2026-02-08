@@ -111,22 +111,23 @@
 <section id="contact" class="container mt-5 mb-5">
     <h2 class="section-title text-center mb-5">Get In Touch</h2>
     <div class="card-dark p-4 mx-auto" style="max-width:600px;">
-        <form id="contactForm">
+        <form id="contactform" method="post">
+            {% csrf_token %}
             <div class="mb-3">
                 <label class="form-label">Name</label>
-                <input type="text" class="form-input" placeholder="Your name" required>
+                <input name="name" type="text" class="form-input" placeholder="Your name" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-input" placeholder="Your email" required>
+                <input name="email" type="email" class="form-input" placeholder="Your email" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Subject</label>
-                <input type="text" class="form-input" placeholder="Message subject" required>
+                <input name="subject" type="text" class="form-input" placeholder="Message subject" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Message</label>
-                <textarea rows="5" class="form-input" placeholder="Your message" required></textarea>
+                <textarea name="message" rows="5" class="form-input" placeholder="Your message" required></textarea>
             </div>
             <button type="submit" class="button-primary w-100">Send Message</button>
         </form>

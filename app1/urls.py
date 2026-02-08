@@ -28,5 +28,13 @@ urlpatterns = [
     path("hacker_apply_complaint",views.hacker_apply_complaint,name="hacker_apply_complaint"),
     path("apply-to-complaint/<int:complaint_id>/",views.apply_to_complaint,name="apply_to_complaint"),
     path("profile",views.profile,name="profile"),
+    path("mywork",views.mywork,name="mywork"),
+    path("hacker/complete-complaint/<int:complaint_id>/",views.complete_complaint,name="complete_complaint"),
+    path("pay-complaint/", views.pay_complaint, name="pay_complaint"),
+    path("complaint-payment-success/", views.complaint_payment_success, name="complaint_payment_success"),
+    path("my_earnings/",views.my_earnings,name="my_earnings"),
+
+
+
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

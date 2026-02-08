@@ -138,3 +138,13 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 RAZORPAY_KEY_ID = "rzp_test_RuDWIxjf3jCR8q"
 RAZORPAY_KEY_SECRET = "fbCTfco0929KSdqWiBda73jx"
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: "secondary",
+    messages.INFO: "info",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "danger",  # 🔥 key fix
+}

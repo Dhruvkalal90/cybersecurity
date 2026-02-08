@@ -29,7 +29,7 @@
             <div class="card-stat card-stat-cyan">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <div class="card-stat-number card-stat-number-cyan">0</div>
+                        <div class="card-stat-number card-stat-number-cyan"> {{active_count}} </div>
                         <div class="card-stat-label">Active Work</div>
                     </div>
                     <i class="bi bi-hourglass-split card-stat-icon card-stat-icon-cyan"></i>
@@ -42,27 +42,37 @@
             <div class="card-stat card-stat-success">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <div class="card-stat-number card-stat-number-success">0</div>
+                        <div class="card-stat-number card-stat-number-success">{{completed_count}} </div>
                         <div class="card-stat-label">Completed</div>
                     </div>
                     <i class="bi bi-check-circle card-stat-icon card-stat-icon-success"></i>
                 </div>
             </div>
         </div>
-        
-        <!-- Card 3: Total Earnings -->
-        <div class="col-md-4 mb-3">
+
+        <div class="col-md-3 mb-3">
             <div class="card-stat card-stat-info">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <div class="card-stat-number card-stat-number-warning">₹0</div>
-                        <div class="card-stat-label">Total Earnings</div>
+                        <div class="card-stat-number card-stat-number-info">₹0 </div>
+                        <div class="card-stat-label">Earnings</div>
                     </div>
-                    <i class="bi bi-wallet2 card-stat-icon card-stat-icon-warning"></i>
+                    <i class="bi bi-wallet2 card-stat-icon card-stat-icon-info"></i>
                 </div>
             </div>
         </div>
         
+        <div class="col-md-3 mb-3">
+            <div class="card-stat card-stat-warning">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-stat-number card-stat-number-warning">{{blog_count}} </div>
+                        <div class="card-stat-label">Blogs</div>
+                    </div>
+                    <i class="bi bi-journal-text card-stat-icon card-stat-icon-warning"></i>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- ACTION BUTTONS ROW -->
@@ -72,7 +82,7 @@
                 <a href="{% url "dashboard" %}" class="button-primary">
                     <i class="bi bi-search me-2"></i>Browse Complaints
                 </a>
-                <a href="hacker-my-work.html" class="button-secondary">
+                <a href="{% url "mywork" %}" class="button-secondary">
                     <i class="bi bi-briefcase me-2"></i>My Work
                 </a>
                 <a href="{% url "blog_mgmt" %}" class="button-secondary">
