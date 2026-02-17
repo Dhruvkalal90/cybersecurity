@@ -2,7 +2,11 @@
 {% block title %}{{request.user.role.name.upper}}{% endblock title %}
 
 {% block content %}
-        
+<!--
+#################################################################
+                            HACKER
+#################################################################
+-->
 {% if request.user.role and request.user.role.name == "HACKER" %}
 <!-- ===== MAIN CONTAINER ===== -->
 <main class="container my-5" style="margin-top: 120px !important;">
@@ -160,8 +164,11 @@
 
     
 </main>
-
-
+<!--
+#################################################################
+                            BUSINESS
+#################################################################
+-->
 {% elif request.user.role and request.user.role.name == "BUSINESS" %}
 <!-- ===== MAIN CONTAINER ===== -->
 <main class="container" style="margin-top: 120px; margin-bottom: 80px;">
@@ -246,7 +253,7 @@
                     <i class="bi bi-calendar-check me-2"></i>Book Awareness Session
                 </a>
 
-                <a href="" class="button-secondary">
+                <a href="{% url "busi_view_payments" %}" class="button-secondary">
                     <i class="bi bi-wallet2 me-2"></i>View Payments
                 </a>
             </div>
@@ -316,7 +323,14 @@
         </div>
     </div>
 
+
 </main>
+
+<!--
+#################################################################
+                            HACKER
+#################################################################
+-->
 {% elif request.user.role and request.user.role.name == "ADMIN" %}
 
     <main class="container-fluid my-5 px-4">

@@ -28,7 +28,7 @@
                 <div class="card-stat-number card-stat-number-info">{{ total_complaints }}</div>
                 <div class="card-stat-label">Complaints</div>
             </div>
-            <i class="bi bi-file-earmark-text card-stat-icon card-stat-icon-info"></i>
+            <i class="bi bi-exclamation-triangle-fill card-stat-icon card-stat-icon-info"></i>
         </div>
     </div>
 
@@ -56,10 +56,10 @@
     <div class="card-stat card-stat-danger">
         <div class="d-flex justify-content-between">
             <div>
-                <div class="card-stat-number card-stat-number-danger">{{ pending_reviews }}</div>
-                <div class="card-stat-label">Pending Reviews</div>
+                <div class="card-stat-number card-stat-number-danger">{{ posts }}</div>
+                <div class="card-stat-label">Published Posts</div>
             </div>
-            <i class="bi bi-clock-history card-stat-icon card-stat-icon-danger"></i>
+            <i class="bi bi-file-earmark-post card-stat-icon card-stat-icon-danger"></i>
         </div>
     </div>
 
@@ -159,13 +159,13 @@
 <a href="{% url "manage_users" %}" class="button-secondary admin-action-btn">
 <i class="bi bi-person-plus"></i>Manage Users
 </a>
-<a href="#" class="button-secondary admin-action-btn">
+<a href="{% url "manage_content" %}" class="button-secondary admin-action-btn">
 <i class="bi bi-pencil-square"></i>Manage Content
 </a>
 <a href="#" class="button-secondary admin-action-btn">
 <i class="bi bi-file-earmark-check"></i>Review Complaints
 </a>
-<a href="#" class="button-secondary admin-action-btn">
+<a href="{% url "manage_payment" %}" class="button-secondary admin-action-btn">
 <i class="bi bi-wallet2"></i>Payment Management
 </a>
 </div>

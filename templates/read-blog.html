@@ -45,12 +45,22 @@
     <main class="container my-4 my-md-5">
 
         <!-- Back link -->
+        {% if request.user.role and request.user.role.name == "ADMIN" %}
+        <a href="{% url 'manage_content' %}" 
+            class="text-cyan"
+            style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px;">
+            <i class="bi bi-arrow-left"></i>
+            <span>Back</span>
+        </a>
+        {% else %}
         <a href="{% url 'blog_list' %}" 
-           class="text-cyan"
-           style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px;">
+            class="text-cyan"
+            style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px;">
             <i class="bi bi-arrow-left"></i>
             <span>Back to blogs</span>
         </a>
+        {% endif %}
+        
 
         <!-- Blog wrapper -->
         <article class="card-dark p-3 p-md-4" style="max-width: 900px; margin: 0 auto;">

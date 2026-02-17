@@ -33,6 +33,7 @@ urlpatterns = [
     path("pay-complaint/", views.pay_complaint, name="pay_complaint"),
     path("complaint-payment-success/", views.complaint_payment_success, name="complaint_payment_success"),
     path("my_earnings/",views.my_earnings,name="my_earnings"),
+    path("busi_view_payments",views.busi_view_payments,name="busi_view_payments")
 
 
 

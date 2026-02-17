@@ -152,7 +152,12 @@
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="card-dark p-4 h-100">
                         <h5>{{ complaint.title }}</h5>
-                        <span class="badge bg-success mb-2">Completed</span>
+                        <span class="badge bg-info mb-2">complaint-Completed</span>
+                        {% if complaint.payout_info.status == "PENDING" %}
+                            <span class="badge bg-danger">payment-Pending</span>
+                        {% elif complaint.payout_info.status == "PAID" %}
+                            <span class="badge bg-success">payment-Paid</span>
+                        {% endif %} 
 
                         <p class="text-gray small">{{ complaint.description|truncatechars:120 }}</p>
                         <p class="text-gray small"> <i class="bi bi-tag me-2"></i> {{complaint.priority}} </p>

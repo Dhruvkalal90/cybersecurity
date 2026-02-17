@@ -1,67 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Content - Cyber Bridge</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="admin.css">
-</head>
-<body>
-    <!-- Admin Navbar -->
-   <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid" style="padding: 0 24px;">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
-                <img src="logo.png" alt="Cyber Bridge Logo" style="height:50px; margin-right:10px;">
-                <span style="color:#00D9FF; font-weight:700;">Cyber Bridge</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin-manage-user.html">Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin-complaint.html">Complaints</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="admin-manage-session.html">Sessions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin-manage-content.html">Content</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin-manage-payment.html">Payments</a>
-                    </li>
-                </ul>
-                <div class="navbar-user">
-                    <div class="notification-icon">
-                        <i class="bi bi-bell"></i>
-                        <span class="notification-badge">0</span>
-                    </div>
-                    <span class="admin-badge">ADMIN</span>
-                    <div class="dropdown">
-                        <button class="btn btn-link text-decoration-none dropdown-toggle" type="button" data-bs-toggle="dropdown" style="color: #F9FAFB;">
-                            <i class="bi bi-person-circle" style="font-size: 24px;"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" style="background: #1a1f29; border: 1px solid #374151;">
-                            <li><a class="dropdown-item" href="#" style="color: #F9FAFB;">Profile</a></li>
-                            <li><a class="dropdown-item" href="index.html" style="color: #EF4444;">Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-    
+{% extends "admin_base.html" %}
+{% block title %}Manage Content - CYBERBRIDGE{% endblock title %}
+{% block content %}
     <main class="container-fluid my-5 px-4">
         
         <!-- Back link -->
@@ -75,22 +14,12 @@
         
         <!-- Stats Row (3 cards) -->
         <div class="row mb-5">
-            <div class="col-md-4 mb-3">
-                <div class="card-stat card-stat-cyan">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <div class="card-stat-number card-stat-number-cyan">0</div>
-                            <div class="card-stat-label">Total Blogs</div>
-                        </div>
-                        <i class="bi bi-file-text card-stat-icon card-stat-icon-cyan"></i>
-                    </div>
-                </div>
-            </div>
+            
             <div class="col-md-4 mb-3">
                 <div class="card-stat card-stat-success">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <div class="card-stat-number card-stat-number-success">0</div>
+                            <div class="card-stat-number card-stat-number-success">{{total_posts}} </div>
                             <div class="card-stat-label">Published</div>
                         </div>
                         <i class="bi bi-check-circle card-stat-icon card-stat-icon-success"></i>
@@ -98,49 +27,41 @@
                 </div>
             </div>
             <div class="col-md-4 mb-3">
-                <div class="card-stat card-stat-warning">
+                <div class="card-stat card-stat-cyan">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <div class="card-stat-number card-stat-number-warning">0</div>
-                            <div class="card-stat-label">Pending Review</div>
+                            <div class="card-stat-number card-stat-number-cyan">{{total_views}} </div>
+                            <div class="card-stat-label">Total Views</div>
                         </div>
-                        <i class="bi bi-clock-history card-stat-icon card-stat-icon-warning"></i>
+                        <i class="bi bi-eye card-stat-icon card-stat-icon-cyan"></i>
                     </div>
                 </div>
             </div>
         </div>
         
         <!-- Filter Section -->
-        <div class="card-dark mb-4">
-            <div class="row align-items-end">
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">Status</label>
-                    <select class="form-select">
-                        <option value="">All Status</option>
-                        <option value="published">Published</option>
-                        <option value="pending">Pending Review</option>
-                        <option value="rejected">Rejected</option>
-                    </select>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">Author Type</label>
-                    <select class="form-select">
-                        <option value="">All Authors</option>
-                        <option value="hacker">Hackers</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">Search</label>
-                    <input type="text" class="form-input" placeholder="Search by title or author...">
-                </div>
-                <div class="col-md-2 mb-3">
-                    <button class="button-primary full-width-button">
-                        <i class="bi bi-search me-1"></i> Search
-                    </button>
-                </div>
-            </div>
+        <form method="get" class="card-dark mb-4 p-4">
+    <div class="row align-items-end">
+        <!-- SEARCH -->
+        <div class="col-md-10 mb-3">
+            <label class="form-label">Search</label>
+            <input type="text"
+                   name="search"
+                   value="{{ search_query }}"
+                   class="form-input"
+                   placeholder="Search by title or author...">
         </div>
+
+        <!-- SUBMIT -->
+        <div class="col-md-2 mb-3">
+            <button class="button-primary full-width-button">
+                <i class="bi bi-search me-1"></i> Search
+            </button>
+        </div>
+
+    </div>
+</form>
+
         
         <!-- Blogs Table -->
         <div class="card-dark">
@@ -159,109 +80,83 @@
                             <th class="table-header-cell">Author</th>
                             <th class="table-header-cell">Published Date</th>
                             <th class="table-header-cell">Views</th>
-                            <th class="table-header-cell">Status</th>
+                            <th class="table-header-cell">Category</th>
                             <th class="table-header-cell">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for post in posts %}
                         <!-- Empty row 1 -->
                         <tr class="table-row">
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                        </tr>
-                        <!-- Empty row 2 -->
-                        <tr class="table-row">
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                        </tr>
-                        <!-- Empty row 3 -->
-                        <tr class="table-row">
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                        </tr>
-                        <!-- Empty row 4 -->
-                        <tr class="table-row">
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                        </tr>
-                        <!-- Empty row 5 -->
-                        <tr class="table-row">
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell"></td>
-                        </tr>
+                            <td class="table-cell">{{post.id}} </td>
+                            <td class="table-cell">{{post.title}} </td>
+                            <td class="table-cell">{{post.author}} </td>
+                            <td class="table-cell">{{post.created_on}} </td>
+                            <td class="table-cell">{{post.views}} </td>
+                            <td class="table-cell">{{post.category}} </td>
+                            <td class="table-cell">
+                                <a href="{% url "admin_view_post" post.id %}" class="table-action-btn" title="View">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+                                <form method="post" action="{% url "admin_delete_post" post.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button class="table-action-btn danger" title="Delete"
+                                        onclick="return confirm('Are you sure you want to Delete this Post?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="table-cell text-center">
+                                    No Post found
+                                </td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
             
             <!-- Pagination -->
-            <div class="d-flex justify-content-center mt-4 gap-2">
-                <button class="button-secondary" style="padding: 8px 16px;" disabled>
-                    <i class="bi bi-chevron-left"></i>
-                </button>
-                <button class="button-primary" style="padding: 8px 16px;">1</button>
-                <button class="button-secondary" style="padding: 8px 16px;">2</button>
-                <button class="button-secondary" style="padding: 8px 16px;">3</button>
-                <button class="button-secondary" style="padding: 8px 16px;">
-                    <i class="bi bi-chevron-right"></i>
-                </button>
+            <div style="display: flex; justify-content: center; margin-top: 24px; gap: 8px;">
+
+                <!-- PREVIOUS -->
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="button-secondary" style="padding: 8px 16px;">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                {% else %}
+                    <button class="button-secondary" style="padding: 8px 16px;" disabled>
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                {% endif %}
+
+                <!-- PAGE NUMBERS -->
+                {% for num in page_obj.paginator.page_range %}
+                    {% if num == page_obj.number %}
+                        <button class="button-primary" style="padding: 8px 16px;">{{ num }}</button>
+                    {% else %}
+                        <a href="?page={{ num }}" class="button-secondary" style="padding: 8px 16px;">
+                            {{ num }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- NEXT -->
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="button-secondary" style="padding: 8px 16px;">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                {% else %}
+                    <button class="button-secondary" style="padding: 8px 16px;" disabled>
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                {% endif %}
+
             </div>
         </div>
         
     </main>
-    
-    <!-- Footer -->
-    <footer class="footer-dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <h5 class="text-cyan mb-3">Cyber Bridge</h5>
-                    <p class="text-gray">Connecting cybersecurity experts with organizations in need of protection.</p>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h6 class="text-white mb-3">Quick Links</h6>
-                    <a href="#" class="footer-link">About Us</a>
-                    <a href="#" class="footer-link">Services</a>
-                    <a href="#" class="footer-link">Contact</a>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h6 class="text-white mb-3">Follow Us</h6>
-                    <div>
-                        <i class="bi bi-twitter footer-social-icon"></i>
-                        <i class="bi bi-linkedin footer-social-icon"></i>
-                        <i class="bi bi-github footer-social-icon"></i>
-                    </div>
-                </div>
-            </div>
-            <hr style="border-color: #1f2937; margin: 30px 0;">
-            <p class="text-gray text-center mb-0">&copy; 2024 Cyber Bridge. All rights reserved.</p>
-        </div>
-    </footer>
-    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% endblock content %}

@@ -33,17 +33,18 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username=None, password=None, **extra_fields):
+    def create_superuser(self, email, username, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("role_id", 3)
 
         if extra_fields.get("is_staff") is not True:
             raise ValueError("Superuser must have is_staff=True.")
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        return self.create_user(email, username=email, password=password, **extra_fields)
+        return self.create_user(email, username=username, password=password, **extra_fields)
 
 
 class User(AbstractUser):
@@ -54,7 +55,7 @@ class User(AbstractUser):
     is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["username"]
 
     objects = CustomUserManager()  # ✅ Use our new manager here
 
@@ -140,9 +141,19 @@ class Payments(models.Model):
     payer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payer',blank=True,null=True)
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver',blank=True,null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    paid_for = models.CharField(
+        max_length=30,
+        choices=[
+            ("COMPLAINT", "Complaint"),
+            ("SESSION", "Awareness Session"),
+            ("HACKER_PAYOUT", "Hacker Payout"),
+        ],
+        null=True,        # ✅ IMPORTANT
+        blank=True        # ✅ IMPORTANT
+    )
     payment_method = models.CharField(max_length=50)
     transaction_id = models.CharField(max_length=100, unique=True)
-    status = models.CharField(max_length=50, default="Pending")
+    status = models.CharField(max_length=50, default="Pending",null=True)
     date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -470,3 +481,27 @@ class contact_us_form(models.Model):
 
     def __str__(self):
         return f"{self.email} - {self.message}"
+    
+class HackerPayout(models.Model):
+    complaint = models.OneToOneField(Complaints, on_delete=models.CASCADE)
+    hacker = models.ForeignKey(Hacker_Profile, on_delete=models.CASCADE)
+
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ("PENDING", "Pending"),
+            ("PAID", "Paid"),
+        ],
+        default="PENDING"
+    )
+
+    payment = models.OneToOneField(
+        Payments,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    completed_on = models.DateTimeField(auto_now_add=True)

@@ -1,0 +1,239 @@
+{% extends "admin_base.html" %}
+{% block title %}Complaint Lifecycle{% endblock title %}
+
+{% block content %}
+<main class="container-fluid my-5 px-4">
+
+<h1 class="page-title mb-5">Complaint Lifecycle Overview</h1>
+
+<!-- ===================== HORIZONTAL STEPPER ===================== -->
+<div class="card-dark p-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center position-relative">
+
+        <!-- Step 1 -->
+        <div class="text-center flex-fill">
+            <div class="step-circle bg-success">
+                <i class="bi bi-file-earmark-text"></i>
+            </div>
+            <div class="step-label">Filed</div>
+        </div>
+
+        <!-- Line -->
+        <div class="step-line"></div>
+
+        <!-- Step 2 -->
+        <div class="text-center flex-fill">
+            <div class="step-circle {% if applications %}bg-success{% else %}bg-secondary{% endif %}">
+                <i class="bi bi-people"></i>
+            </div>
+            <div class="step-label">Applied</div>
+        </div>
+
+        <div class="step-line"></div>
+
+        <!-- Step 3 -->
+        <div class="text-center flex-fill">
+            <div class="step-circle {% if complaint.assigned_hacker %}bg-success{% else %}bg-secondary{% endif %}">
+                <i class="bi bi-person-check"></i>
+            </div>
+            <div class="step-label">Assigned</div>
+        </div>
+
+        <div class="step-line"></div>
+
+        <!-- Step 4 -->
+        <div class="text-center flex-fill">
+            <div class="step-circle {% if completion %}bg-success{% else %}bg-secondary{% endif %}">
+                <i class="bi bi-check2-square"></i>
+            </div>
+            <div class="step-label">Completed</div>
+        </div>
+
+        <div class="step-line"></div>
+
+        <!-- Step 5 -->
+        <div class="text-center flex-fill">
+            <div class="step-circle {% if payout and payout.status == "PAID" %}bg-success{% else %}step-transparent{% endif %}">
+                <i class="bi bi-currency-rupee"></i>
+            </div>
+            <div class="step-label">Paid</div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- ===================== MAIN CONTENT GRID ===================== -->
+<div class="row">
+
+    <!-- LEFT COLUMN -->
+    <div class="col-lg-6">
+
+        <!-- Complaint Info -->
+        <div class="card-dark p-4 mb-4">
+            <h5 class="section-heading mb-3">Complaint Details</h5>
+            <p><strong>Title:</strong> {{ complaint.title }}</p>
+            <p><strong>Business:</strong> {{ complaint.business.company_name }}</p>
+            <p><strong>Category:</strong> {{ complaint.category }}</p>
+            <p><strong>Service:</strong> {{ complaint.service_type }}</p>
+            <p><strong>Priority:</strong> {{ complaint.priority }}</p>
+            <p><strong>Status:</strong> 
+                <span class="badge bg-info">{{ complaint.status }}</span>
+            </p>
+            <p><strong>Submitted:</strong> {{ complaint.date_submitted|date:"d M Y H:i" }}</p>
+        </div>
+
+        <!-- Applications -->
+        <div class="card-dark p-4 mb-4">
+            <h5 class="section-heading mb-3">Applications</h5>
+
+            {% for app in applications %}
+            <div class="border-bottom pb-2 mb-2">
+                <strong>{{ app.hacker.user.email }}</strong>
+                <span class="badge bg-secondary">{{ app.status }}</span>
+            </div>
+            {% empty %}
+                <p class="text-muted">No applications yet.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-lg-6">
+
+        <!-- Assigned Hacker -->
+        <div class="card-dark p-4 mb-4">
+            <h5 class="section-heading mb-3">Assigned Hacker</h5>
+            {% if complaint.assigned_hacker %}
+                <p><strong>Email:</strong> {{ complaint.assigned_hacker.user.email }}</p>
+                <p><strong>Specialization:</strong> {{ complaint.assigned_hacker.specialization }}</p>
+            {% else %}
+                <p class="text-warning">No hacker assigned</p>
+            {% endif %}
+        </div>
+
+        <!-- Completion -->
+        <div class="card-dark p-4 mb-4">
+            <h5 class="section-heading mb-3">Completion Report</h5>
+            {% if completion %}
+                <p><strong>Date:</strong> {{ completion.completed_at|date:"d M Y H:i" }}</p>
+                <p><strong>Remarks:</strong> {{ completion.remarks }}</p>
+                <a href="{{ completion.report_file.url }}" 
+                   class="btn btn-outline-info btn-sm" target="_blank">
+                    View Report
+                </a>
+            {% else %}
+                <p class="text-muted">Work not completed yet</p>
+            {% endif %}
+        </div>
+
+        <!-- Payout -->
+        <div class="card-dark p-4 mb-4">
+            <h5 class="section-heading mb-3">Hacker Payout</h5>
+            {% if payout %}
+                <p><strong>Amount:</strong> ₹{{ payout.amount }}</p>
+                <p>
+                    <strong>Status:</strong>
+                    {% if payout.status == "PAID" %}
+                        <span class="badge bg-success">Paid</span>
+                    {% else %}
+                        <span class="badge bg-warning">Pending</span>
+                    {% endif %}
+                </p>
+            {% else %}
+                <p class="text-muted">No payout generated</p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+
+<!-- ===================== ACTION BUTTONS ===================== -->
+<div class="card-dark p-4 text-end mt-4">
+
+    <!-- ================= VERIFY BUTTON ================= -->
+    <form method="POST" class="d-inline">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="verify">
+
+        <button class="btn btn-success me-2"
+            {% if complaint.status != "Completed" %}
+                disabled
+            {% endif %}
+        >
+            <i class="bi bi-check-circle"></i> Mark Verified
+        </button>
+    </form>
+
+
+    <!-- ================= REASSIGN BUTTON ================= -->
+    <form method="POST" class="d-inline">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="reassign">
+
+        <button class="btn btn-warning me-2"
+            {% if complaint.status == "Completed" %}
+                disabled
+            {% endif %}
+        >
+            <i class="bi bi-arrow-repeat"></i> Reassign
+        </button>
+    </form>
+
+
+    <!-- ================= MARK PAID BUTTON ================= -->
+    <form method="POST" class="d-inline">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="mark_paid">
+
+        <button class="btn btn-primary"
+            {% if complaint.status == "Completed" or not payout or payout.status == "PAID" %}
+                disabled
+            {% endif %}
+        >
+            <i class="bi bi-currency-rupee"></i> Mark Paid
+        </button>
+    </form>
+
+</div>
+
+
+</main>
+
+<!-- ===================== STEPPER CSS ===================== -->
+<style>
+.step-circle {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    color: white;
+    font-size: 20px;
+}
+
+.step-line {
+    height: 3px;
+    background-color: #444;
+    flex-grow: 1;
+    margin: 0 10px;
+}
+
+.step-label {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #ccc;
+}
+.step-transparent {
+    background-color: transparent;
+    border: 2px solid #666;
+    color: #666;
+}
+
+</style>
+
+{% endblock content %}

@@ -11,9 +11,9 @@ from django.db import transaction
 import razorpay
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from .models import TempComplaintFile
+from .models import TempComplaintFile,HackerPayout
 from django.core.paginator import Paginator
-
+from django.utils.dateparse import parse_date
 
 SERVICE_PRICES = {
     "REPORT": 15000,
@@ -343,7 +343,7 @@ def business_profile_form(request):
         profile.save()
 
         messages.success(request, "Business profile saved successfully!")
-        return redirect("business_dashboard")
+        return redirect("dashboard")
 
     return render(request, "business-detail-form.html")
 
@@ -473,7 +473,8 @@ def payment_success(request):
             amount=booking["total_price"],
             payment_method="RAZORPAY",
             transaction_id=payment_id,
-            status="Paid"
+            status="Paid",
+            paid_for="SESSION"
         )
 
         # ✅ 2. CREATE AWARENESS SESSION & LINK PAYMENT
@@ -759,7 +760,8 @@ def complaint_payment_success(request):
             amount=pending["amount"],
             payment_method="RAZORPAY",
             transaction_id=payment_id,
-            status="Paid"
+            status="Paid",
+            paid_for="COMPLAINT"
         )
 
         # ✅ 2. CREATE COMPLAINT & LINK PAYMENT
@@ -887,23 +889,36 @@ def profile(request):
         return redirect("dashboard")
     return render(request,"profile.html",{"profile":Profile})
 
-def mywork(request):
-    hacker = Hacker_Profile.objects.get(user=request.user)
+from django.db.models import Prefetch
 
+@login_required
+def mywork(request):
+    hacker = get_object_or_404(Hacker_Profile, user=request.user)
+
+    # Active work
     active_complaints = Complaints.objects.filter(
         assigned_hacker=hacker,
         status="In Progress"
     ).order_by("-date_submitted")
 
+    # Completed work WITH payout info
     completed_complaints = Complaints.objects.filter(
         assigned_hacker=hacker,
         status="Completed"
+    ).select_related("completion") \
+    .prefetch_related(  
+        Prefetch(
+            "hackerpayout",
+            queryset=HackerPayout.objects.only("status"),
+            to_attr="payout_info"
+        )
     ).order_by("-date_submitted")
 
     return render(request, "hacker-my-work.html", {
         "active_complaints": active_complaints,
         "completed_complaints": completed_complaints,
     })
+
 
 # views.py
 @role_required("hacker", "dashboard")
@@ -926,7 +941,6 @@ def complete_complaint(request, complaint_id):
             return redirect("mywork")
 
         with transaction.atomic():
-            # Save completion report
             ComplaintCompletion.objects.create(
                 complaint=complaint,
                 hacker=hacker,
@@ -934,9 +948,16 @@ def complete_complaint(request, complaint_id):
                 remarks=remarks
             )
 
-            # Update complaint status
             complaint.status = "Completed"
             complaint.save()
+
+            HackerPayout.objects.create(
+                complaint=complaint,
+                hacker=hacker,
+                amount=complaint.payment.amount*settings.PAYOUT_PERCENT/100,  # your logic
+                status="PENDING"
+            )
+
 
         messages.success(request, "Work marked as completed successfully.")
         return redirect("mywork")
@@ -948,3 +969,60 @@ def complete_complaint(request, complaint_id):
 def my_earnings(request):
     return render(request,"hacker-earnings-banking.html")
 
+@login_required
+def busi_view_payments(request):
+
+    if request.user.role.name != "BUSINESS":
+        return redirect("dashboard")
+
+    payments = Payments.objects.filter(
+        payer=request.user
+    ).order_by("-date")
+
+    # ============================
+    # FILTER PARAMETERS
+    # ============================
+    status = request.GET.get("status")
+    paid_for = request.GET.get("type")
+    search = request.GET.get("search")
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+
+    # ============================
+    # APPLY FILTERS
+    # ============================
+    if status:
+        payments = payments.filter(status=status)
+
+    if paid_for:
+        payments = payments.filter(paid_for=paid_for)
+
+    if search:
+        payments = payments.filter(
+            transaction_id__icontains=search
+        )
+
+    if start_date:
+        payments = payments.filter(date__date__gte=parse_date(start_date))
+
+    if end_date:
+        payments = payments.filter(date__date__lte=parse_date(end_date))
+
+    # ============================
+    # STATS (based on filtered data)
+    # ============================
+    total_payments = payments.count()
+    session_payments = payments.filter(paid_for="SESSION").count()
+    complaint_payments = payments.filter(paid_for="COMPLAINT").count()
+
+    return render(request, "business-view-payments.html", {
+        "payments": payments,
+        "total_payments": total_payments,
+        "session_payments": session_payments,
+        "complaint_payments": complaint_payments,
+        "selected_status": status,
+        "selected_type": paid_for,
+        "search_query": search,
+        "start_date": start_date,
+        "end_date": end_date,
+    })

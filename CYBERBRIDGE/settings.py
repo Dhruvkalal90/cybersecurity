@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-zm%v7ad*hwov58fl_wx#0l(d2y@rrv2@o^hy!8kx6bwn5563zm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*",]
+ALLOWED_HOSTS = ["*","https://survivors-entrance-excellent-presentations.trycloudflare.com    "]
 
 
 # Application definition
@@ -134,7 +134,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://queen-controls-kent-basically.trycloudflare.com  "
+    "https://survivors-entrance-excellent-presentations.trycloudflare.com"
 ]
 RAZORPAY_KEY_ID = "rzp_test_RuDWIxjf3jCR8q"
 RAZORPAY_KEY_SECRET = "fbCTfco0929KSdqWiBda73jx"
@@ -148,3 +148,5 @@ MESSAGE_TAGS = {
     messages.WARNING: "warning",
     messages.ERROR: "danger",  # 🔥 key fix
 }
+PROFIT_PERCENT=40
+PAYOUT_PERCENT=100-PROFIT_PERCENT
